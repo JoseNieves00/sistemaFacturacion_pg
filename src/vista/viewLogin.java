@@ -190,12 +190,12 @@ public class viewLogin extends javax.swing.JFrame {
 
         Usuario usuario = controladorLogin.autenticar(username, password);
         if (usuario != null) {
-            JOptionPane.showMessageDialog(this, "Welcome " + usuario.getUsername());
+            JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
             // Aqui iria la opcion siguiente al login
 
             dispose(); // Cierra la ventana de login
         } else {
-            JOptionPane.showMessageDialog(this, "Invalid username or password");
+            JOptionPane.showMessageDialog(this, "Credenciales Invalidas...");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
