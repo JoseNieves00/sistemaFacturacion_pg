@@ -10,10 +10,6 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 
-/**
- *
- * @author Janer
- */
 public class viewLogin extends javax.swing.JFrame {
 
     private controladorLogin controladorLogin;
