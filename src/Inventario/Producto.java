@@ -67,5 +67,9 @@ public class Producto extends Item{
         salida.append(getCodigo() + "\t" + getNombre() + "\t" + getDescripcion()+ "\t"+ precioCompra+ "\t"+ precioVenta +"\t" + + getCantidad() + "\n");
         JOptionPane.showMessageDialog(null, salida);
     }
+
+    public void setCodigo(int nuevoCodigo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

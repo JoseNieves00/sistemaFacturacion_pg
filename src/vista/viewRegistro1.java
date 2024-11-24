@@ -5,6 +5,11 @@
 package vista;
 
 import Inventario.Producto;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -21,31 +26,72 @@ public class viewRegistro1 extends javax.swing.JFrame {
     ArrayList<Producto> lista;
     DefaultTableModel modelo;
     int fila;
+    private static final String FILE_NAME = "inventario.txt";
 
-    /**
-     * Creates new form viewRegistro1
-     */
     public viewRegistro1() {
         initComponents();
         lista = new ArrayList<>();
         modelo = new DefaultTableModel();
         txtID.grabFocus();
         setLocationRelativeTo(null);
+        cargarDatosDesdeArchivo();
+        agregarTabla();
+    }
+     private void guardarDatosEnArchivo() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (Producto p : lista) {
+                writer.write(String.format("%s,%s,%s,%.2f,%.2f,%d%n",
+                    p.getCodigo(), p.getNombre(), p.getDescripcion(),
+                    p.getPrecioCompra(), p.getPrecioVenta(), p.getCantidad()));
+            }
+            JOptionPane.showMessageDialog(this, "Datos guardados exitosamente en el archivo.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar los datos en el archivo: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarDatosDesdeArchivo() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return; // If the file doesn't exist, we don't need to load anything
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 6) {
+                    Producto p = new Producto(
+                        data[0], data[1], data[2],
+                        Double.parseDouble(data[3]),
+                        Double.parseDouble(data[4]),
+                        Integer.parseInt(data[5])
+                    );
+                    lista.add(p);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Datos cargados exitosamente desde el archivo.");
+        } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los datos desde el archivo: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     void agregarTabla() {
+        limpiarTabla();
         modelo = (DefaultTableModel) tblRegistro.getModel();
-        Object[] ob = new Object[7];
-        for (int i = 0; i < lista.size(); i++) {
-            ob[0] = lista.get(i).getCodigo();
-            ob[1] = lista.get(i).getNombre();
-            ob[2] = lista.get(i).getDescripcion();
-            ob[3] = lista.get(i).getPrecioCompra();
-            ob[4] = lista.get(i).getPrecioVenta();
-            ob[5] = lista.get(i).getCantidad();
-            modelo.addRow(ob);
+        for (Producto producto : lista) {
+            Object[] fila = {
+                producto.getCodigo(),
+                producto.getNombre(),
+                producto.getDescripcion(),
+                producto.getPrecioCompra(),
+                producto.getPrecioVenta(),
+                producto.getCantidad()
+            };
+            modelo.addRow(fila);
         }
-        tblRegistro.setModel(modelo);
     }
 
     boolean verificarCodigo(String codigo) {
@@ -56,6 +102,7 @@ public class viewRegistro1 extends javax.swing.JFrame {
         }
         return false;
     }
+
     void limpiarCampos() {
         txtID.setText("");
         txtNombre.setText("");
@@ -63,6 +110,7 @@ public class viewRegistro1 extends javax.swing.JFrame {
         txtCompra.setText("");
         txtVenta.setText("");
         txtCantidad.setText("");
+        tbnAgregar.setEnabled(true);
     }
 
     void limpiarTabla() {
@@ -76,21 +124,19 @@ public class viewRegistro1 extends javax.swing.JFrame {
     }
 
     private void validarCampos() throws IOException, Exception {
-        if (txtID.getText().isEmpty() || txtNombre.getText().isEmpty()
-                || txtDescripcion.getText().isEmpty() || txtCompra.getText().isEmpty()
-                || txtVenta.getText().isEmpty() || txtCantidad.getText().isEmpty()) {
-            throw new Exception("Todos los campos son obligatorios.");
-        }
-        double precioCompra = Double.parseDouble(txtCompra.getText());
-        double precioVenta = Double.parseDouble(txtVenta.getText());
-        int cantidad = Integer.parseInt(txtCantidad.getText());
+        try {
+            double precioCompra = Double.parseDouble(txtCompra.getText());
+            double precioVenta = Double.parseDouble(txtVenta.getText());
+            int cantidad = Integer.parseInt(txtCantidad.getText());
 
-        if (precioCompra <= 0 || precioVenta <= 0) {
-            throw new Exception("Los precios deben ser mayores a 0");
-        }
-
-        if (cantidad <= 0) {
-            throw new Exception("La cantidad debe ser mayor a 0");
+            if (precioCompra <= 0 || precioVenta <= 0) {
+                throw new Exception("Los precios deben ser mayores a 0.");
+            }
+            if (cantidad <= 0) {
+                throw new Exception("La cantidad debe ser mayor a 0.");
+            }
+        } catch (NumberFormatException e) {
+            throw new Exception("Por favor, ingrese valores numéricos válidos para precios y cantidad.");
         }
     }
 
@@ -326,9 +372,10 @@ public class viewRegistro1 extends javax.swing.JFrame {
             );
 
             lista.add(p);
-            agregarTabla();
-            limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Producto agregado con éxito");
+        agregarTabla();
+        limpiarCampos();
+        guardarDatosEnArchivo(); // Save data after adding a new product
+        JOptionPane.showMessageDialog(this, "Producto agregado con éxito");
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para precios y cantidad", "Error", JOptionPane.ERROR_MESSAGE);
@@ -339,34 +386,69 @@ public class viewRegistro1 extends javax.swing.JFrame {
 
     private void tbnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnModificarActionPerformed
         // TODO add your handling code here:
-         try {
+        /*try {
             if (fila == -1) {
                 throw new Exception("Por favor, seleccione un producto para modificar.");
             }
 
             validarCampos();
 
-            String nuevoCodigo = txtID.getText();
-            if (!nuevoCodigo.equals(lista.get(fila).getCodigo()) && verificarCodigo(nuevoCodigo)) {
+            String nuevoCodigo = txtID.getText().trim();
+            Producto productoExist = lista.get(fila);
+
+            // Verificar si el nuevo código ya existe en otro producto
+            if (!nuevoCodigo.equals(productoExist.getCodigo()) && verificarCodigo(nuevoCodigo)) {
                 throw new Exception("El nuevo código ya existe en la lista.");
             }
 
-            Producto p = lista.get(fila);
-            p.setCodigo(nuevoCodigo);
-            p.setNombre(txtNombre.getText());
-            p.setDescripcion(txtDescripcion.getText());
-            p.setPrecioCompra(Double.parseDouble(txtCompra.getText()));
-            p.setPrecioVenta(Double.parseDouble(txtVenta.getText()));
-            p.setCantidad(Integer.parseInt(txtCantidad.getText()));
+            // Actualizar el producto existente
+            productoExist.setCodigo(nuevoCodigo);
+            productoExist.setNombre(txtNombre.getText().trim());
+            productoExist.setDescripcion(txtDescripcion.getText().trim());
+            productoExist.setPrecioCompra(Double.parseDouble(txtCompra.getText().trim()));
+            productoExist.setPrecioVenta(Double.parseDouble(txtVenta.getText().trim()));
+            productoExist.setCantidad(Integer.parseInt(txtCantidad.getText().trim()));
 
-            agregarTabla();
-            limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Producto modificado con éxito");
+            modelo.setRowCount(0); // Limpiar la tabla
+            agregarTabla();       // Cargar los datos actualizados
+            limpiarCampos();      // Limpiar los campos de texto
+            guardarDatosEnArchivo(); // Save data after modifying a product
+            tbnAgregar.setEnabled(true); // Habilitar el botón de agregar
+
+            JOptionPane.showMessageDialog(this, "Producto modificado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para precios y cantidad", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }*/
+        String ModiId,ModiNom,ModiDes;
+        ModiId=txtID.getText();
+        ModiNom=txtNombre.getText();
+        ModiDes=txtDescripcion.getText();
+        double ModiComp,ModiVent; 
+        ModiComp= Double.parseDouble(txtCompra.getText());
+        ModiVent= Double.parseDouble(txtVenta.getText());
+        int ModiCan;
+        ModiCan= Integer.parseInt(txtCantidad.getText());
+        
+        lista.get(fila).setCodigo(ModiId);
+        lista.get(fila).setNombre(ModiNom);
+        lista.get(fila).setDescripcion(ModiDes);
+        lista.get(fila).setPrecioCompra(ModiComp);
+        lista.get(fila).setPrecioVenta(ModiVent);
+        lista.get(fila).setCantidad(ModiCan);
+        
+        modelo.setRowCount(0);
+        for (int i = 0; i < lista.size(); i++) {
+            Object[]objs={lista.get(i).getCodigo(),lista.get(i).getNombre(),lista.get(i).getDescripcion(),
+            lista.get(i).getPrecioCompra(),lista.get(i).getPrecioVenta(),lista.get(i).getCantidad()};
+            
+            modelo.addRow(objs);
+            
         }
+        limpiarCampos();
+        tbnAgregar.setEnabled(true);
+                      
 
     }//GEN-LAST:event_tbnModificarActionPerformed
 
@@ -377,15 +459,16 @@ public class viewRegistro1 extends javax.swing.JFrame {
                 throw new Exception("Por favor, seleccione un producto para eliminar.");
             }
 
-            int confirmacion = JOptionPane.showConfirmDialog(this, 
-                "¿Está seguro de que desea eliminar este producto?", 
-                "Confirmación", JOptionPane.YES_NO_OPTION);
+            int confirmacion = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro de que desea eliminar este producto?",
+                    "Confirmación", JOptionPane.YES_NO_OPTION);
 
             if (confirmacion == JOptionPane.YES_OPTION) {
-                lista.remove(fila);
-                agregarTabla();
-                limpiarCampos();
-                JOptionPane.showMessageDialog(this, "Producto eliminado con éxito");
+            lista.remove(fila);
+            agregarTabla();
+            limpiarCampos();
+            guardarDatosEnArchivo(); // Save data after deleting a product
+            JOptionPane.showMessageDialog(this, "Producto eliminado con éxito");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -413,20 +496,26 @@ public class viewRegistro1 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadActionPerformed
 
-     private void tblRegistroMouseClicked(java.awt.event.MouseEvent evt) {
+    private void tblRegistroMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
-       fila = tblRegistro.getSelectedRow();
-        if (fila != -1) {
+        fila = tblRegistro.getSelectedRow(); // tabla es el JTable de tu interfaz
+
+        if (fila >= 0) {
+            // Obtener el producto de la lista correspondiente a la fila seleccionada
             Producto p = lista.get(fila);
-            txtID.setText(p.getCodigo());
+
+            // Llenar los campos de texto con la información del producto
+            txtID.setText(String.valueOf(p.getCodigo()));
             txtNombre.setText(p.getNombre());
             txtDescripcion.setText(p.getDescripcion());
             txtCompra.setText(String.valueOf(p.getPrecioCompra()));
             txtVenta.setText(String.valueOf(p.getPrecioVenta()));
             txtCantidad.setText(String.valueOf(p.getCantidad()));
+            
             tbnAgregar.setEnabled(false);
         }
     }
+
     /**
      * @param args the command line arguments
      */
