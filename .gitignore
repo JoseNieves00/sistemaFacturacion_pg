@@ -2,3 +2,6 @@
 usuarios.txt
 proveedores.txt
 inventario.txt
+/dist/
+facturas
+nbproject/private/private.xml

@@ -6,20 +6,20 @@ package controlador;
 
 import java.io.*;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelo.Producto;
 import modelo.Proveedor;
 
 public class controladorProductos {
 
     public boolean verificarCodigo(String codigo) {
-    for (Producto p : productos) {
-        if (p.getCodigo().equals(codigo)) {
-            return true; // El código ya existe en la lista
+        for (Producto p : productos) {
+            if (p.getCodigo().equals(codigo)) {
+                return true; // El código ya existe en la lista
+            }
         }
+        return false; // El código no existe
     }
-    return false; // El código no existe
-}
-   
 
     private final String archivoProductos = "inventario.txt";
     private ArrayList<Producto> productos;
@@ -29,31 +29,34 @@ public class controladorProductos {
     }
 
     // Cargar proveedores desde el archivo
-    private ArrayList<Producto> cargarProductos() throws IOException {
+    public ArrayList<Producto> cargarProductos() throws IOException {
         ArrayList<Producto> lista = new ArrayList<>();
         File archivo = new File(archivoProductos);
 
-        // Si el archivo no existe, lo creamos vacío
         if (!archivo.exists()) {
-            archivo.createNewFile();
+            archivo.createNewFile(); // Crear el archivo vacío si no existe
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
-                // Validar que la línea no esté vacía y tenga al menos 3 partes
-                if (!linea.trim().isEmpty()) {
+
+                if (!linea.isEmpty()) {
                     String[] partes = linea.split(",");
-                    if (partes.length == 5) { // Verificar que hay 3 partes
-                        lista.add(new Producto(partes[0], partes[1], Double.parseDouble(partes[2]),Double.parseDouble(partes[3]),Integer.parseInt(partes[4])));
-                    } else {
-                        System.err.println("Línea inválida en el archivo: " + linea);
+                    if (partes.length == 5) {
+                        Producto producto = new Producto(
+                                partes[0], partes[1],
+                                Double.parseDouble(partes[2]), Double.parseDouble(partes[3]),
+                                Integer.parseInt(partes[4])
+                        );
+                        lista.add(producto);
+                        System.out.println("Producto cargado: " + producto.getCodigo()); // Verificación en consola
                     }
                 }
             }
         }
 
-        return lista;
+        return lista; // Devuelve la lista cargada
     }
 
     // Agregar un proveedor y guardar en el archivo
@@ -63,12 +66,24 @@ public class controladorProductos {
     }
 
     // Guardar todos los proveedores en el archivo
-    private void guardarProducto() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoProductos, false))) {
+    public void guardarProducto() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoProductos, true))) {
             for (Producto producto : productos) {
                 writer.write(producto.toString());
                 writer.newLine();
             }
+        }
+    }
+
+    public void guardarProductos() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoProductos))) {
+            for (Producto producto : productos) {
+                writer.write(producto.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
         }
     }
 
@@ -84,6 +99,22 @@ public class controladorProductos {
         guardarProducto();
     }
 
+    public void reducirStock(String codigo, int cantidad) throws IOException {
+        for (Producto producto : productos) {
+            if (producto.getCodigo().equalsIgnoreCase(codigo)) {
+                // Verificamos si hay suficiente stock para reducir temporalmente
+                if (producto.getCantidad() >= cantidad) {
+                    // Reducir la cantidad en el inventario temporalmente
+                    producto.setCantidad(producto.getCantidad() - cantidad);
+                    return; // Salimos del método después de reducir el stock
+                } else {
+                    throw new IllegalArgumentException("Stock insuficiente para el producto: " + producto.getNombre());
+                }
+            }
+        }
+        throw new IllegalArgumentException("Producto no encontrado en el inventario.");
+    }
+
     public void modificarProveedor(String nit, Producto nuevoProducto) throws IOException {
         for (int i = 0; i < productos.size(); i++) {
             if (productos.get(i).getCodigo().equals(nit)) {
@@ -95,9 +126,20 @@ public class controladorProductos {
         guardarProducto();
     }
 
+    public Producto buscarProducto(String codigo) {
+        codigo = codigo.trim();
+        for (Producto producto : productos) {
+            String productCodigo = producto.getCodigo().trim();
+            if (productCodigo.equals(codigo)) {
+                return producto;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Producto no encontrado!", "Error", JOptionPane.ERROR_MESSAGE);
+        return null;
+    }
+
     // Obtener la lista de proveedores
     public ArrayList<Producto> listarProductos() {
         return productos;
-    }}
-
-
+    }
+}
