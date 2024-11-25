@@ -63,8 +63,8 @@ public class viewProducto extends javax.swing.JFrame {
         txtID.setText("");
         txtNombre.setText("");
         txtCompra.setText("");
-        txtVenta.setText("");
         txtCantidad.setText("");
+        txtVenta.setText("");
         btnAgregar.setEnabled(true);
     }
 
@@ -76,14 +76,14 @@ public class viewProducto extends javax.swing.JFrame {
     }
 
     private void validarCampos() throws Exception {
-        if (txtID.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtCompra.getText().trim().isEmpty() || txtVenta.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty()) {
+        if (txtID.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtCompra.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty() || txtVenta.getText().trim().isEmpty()) {
             throw new Exception("Todos los campos deben estar llenos.");
         }
 
         try {
             double precioCompra = Double.parseDouble(txtCompra.getText());
-            double precioVenta = Double.parseDouble(txtVenta.getText());
-            int cantidad = Integer.parseInt(txtCantidad.getText());
+            double precioVenta = Double.parseDouble(txtCantidad.getText());
+            int cantidad = Integer.parseInt(txtVenta.getText());
 
             if (precioCompra <= 0 || precioVenta <= 0) {
                 throw new Exception("Los precios deben ser mayores a 0.");
@@ -96,7 +96,7 @@ public class viewProducto extends javax.swing.JFrame {
         }
     }
 
-        private void validarCamposModificar() throws Exception {
+    private void validarCamposModificar() throws Exception {
         if (txtIDM.getText().trim().isEmpty() || txtNombreM.getText().trim().isEmpty() || txtCompraM.getText().trim().isEmpty() || txtVentaM.getText().trim().isEmpty() || txtCantidadM.getText().trim().isEmpty()) {
             throw new Exception("Todos los campos deben estar llenos.");
         }
@@ -140,9 +140,9 @@ public class viewProducto extends javax.swing.JFrame {
         COMPRA = new javax.swing.JLabel();
         txtCompra = new javax.swing.JTextField();
         VENTA = new javax.swing.JLabel();
-        txtVenta = new javax.swing.JTextField();
-        CANTIDAD = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
+        CANTIDAD = new javax.swing.JLabel();
+        txtVenta = new javax.swing.JTextField();
         frmModificarPP = new javax.swing.JFrame();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -220,20 +220,20 @@ public class viewProducto extends javax.swing.JFrame {
         VENTA.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         VENTA.setText("PRECIO VENTA");
 
-        txtVenta.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtVenta.addActionListener(new java.awt.event.ActionListener() {
+        txtCantidad.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtVentaActionPerformed(evt);
+                txtCantidadActionPerformed(evt);
             }
         });
 
         CANTIDAD.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         CANTIDAD.setText("CANTIDAD");
 
-        txtCantidad.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
+        txtVenta.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadActionPerformed(evt);
+                txtVentaActionPerformed(evt);
             }
         });
 
@@ -263,8 +263,8 @@ public class viewProducto extends javax.swing.JFrame {
                             .addComponent(CANTIDAD))
                         .addGap(35, 35, 35)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                            .addComponent(txtVenta)))
+                            .addComponent(txtVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(txtCantidad)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(COMPRA)
                         .addGap(15, 15, 15)
@@ -291,11 +291,11 @@ public class viewProducto extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(VENTA)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CANTIDAD)
-                    .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(64, 64, 64)
                 .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -600,7 +600,7 @@ public class viewProducto extends javax.swing.JFrame {
         txtCompraM.setText(String.valueOf(tblProductos.getValueAt(fila, 2)));
         txtVentaM.setText(String.valueOf(tblProductos.getValueAt(fila, 3)));
         txtCantidadM.setText(String.valueOf(tblProductos.getValueAt(fila, 4)));
-       
+
         btnModificar.setEnabled(true);
         btnEliminar.setEnabled(true);
     }//GEN-LAST:event_tblProductosMouseClicked
@@ -608,6 +608,7 @@ public class viewProducto extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         frmModificarPP.setVisible(true);
+        frmCrearPP.setSize(586, 480);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -625,6 +626,9 @@ public class viewProducto extends javax.swing.JFrame {
                 actualizarTabla();
                 limpiarCampos();
                 JOptionPane.showMessageDialog(this, "Producto eliminado con éxito");
+
+                btnModificar.setEnabled(true);
+                btnEliminar.setEnabled(true);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -635,7 +639,7 @@ public class viewProducto extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         frmCrearPP.setVisible(true);
-        frmCrearPP.setSize(603, 418);
+        frmCrearPP.setSize(586, 480);
         actualizarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -673,13 +677,13 @@ public class viewProducto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCompraActionPerformed
 
-    private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtVentaActionPerformed
-
     private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadActionPerformed
+
+    private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtVentaActionPerformed
 
     private void btnModificarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPActionPerformed
         // TODO add your handling code here:
@@ -699,6 +703,8 @@ public class viewProducto extends javax.swing.JFrame {
             actualizarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(this, "Producto modificado con éxito");
+            btnModificar.setEnabled(false);
+        btnEliminar.setEnabled(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
