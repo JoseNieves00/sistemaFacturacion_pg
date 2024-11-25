@@ -320,6 +320,7 @@
                 </BevelBorder>
               </Border>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tbnModificarActionPerformed"/>
@@ -328,6 +329,7 @@
         <Component class="javax.swing.JButton" name="tbnEliminar">
           <Properties>
             <Property name="text" type="java.lang.String" value="ELIMINAR"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tbnEliminarActionPerformed"/>

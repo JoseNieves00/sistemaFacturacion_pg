@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class viewRegistro extends javax.swing.JFrame {
 
     private controladorProductos controlador;
-    ArrayList<Producto> lista;
+    ArrayList<Producto> productos;
     DefaultTableModel modelo;
     int fila;
 
@@ -28,19 +28,19 @@ public class viewRegistro extends javax.swing.JFrame {
         initComponents();
         controlador = new controladorProductos();
         modelo = new DefaultTableModel();
-        modelo =  (DefaultTableModel) tblRegistro.getModel();
+        modelo = (DefaultTableModel) tblRegistro.getModel();
         txtID.grabFocus();
         setLocationRelativeTo(null);
         AgregarTabla();
     }
-   
+
     private void AgregarTabla() {
         limpiarTabla();
         modelo.setRowCount(0); // Limpiar la tabla
-        ArrayList<Producto> productos = controlador.listarProductos();
+        productos = controlador.listarProductos();
         if (productos != null && !productos.isEmpty()) {
             for (Producto producto : productos) {
-                modelo.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getPrecioCompra(),producto.getPrecioVenta(),producto.getCantidad()});
+                modelo.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getPrecioCompra(), producto.getPrecioVenta(), producto.getCantidad()});
             }
         } else {
             // Si la lista está vacía, puedes mostrar un mensaje
@@ -49,8 +49,6 @@ public class viewRegistro extends javax.swing.JFrame {
 
         tblRegistro.setModel(modelo);
     }
-
-
 
     void limpiarCampos() {
         txtID.setText("");
@@ -77,14 +75,16 @@ public class viewRegistro extends javax.swing.JFrame {
             double precioVenta = Double.parseDouble(txtVenta.getText());
             int cantidad = Integer.parseInt(txtCantidad.getText());
 
-            if (precioCompra <= 0 || precioVenta <= 0) {
-                throw new Exception("Los precios deben ser mayores a 0.");
+            if (precioCompra <= 0 || precioVenta <= 0) {                        
+                JOptionPane.showMessageDialog(null,"Los precios deben ser mayores a 0.","error",JOptionPane.ERROR_MESSAGE);
+
             }
             if (cantidad <= 0) {
-                throw new Exception("La cantidad debe ser mayor a 0.");
+                JOptionPane.showMessageDialog(null,"La cantidad debe ser mayor a 0.","error",JOptionPane.ERROR_MESSAGE);
+
             }
         } catch (NumberFormatException e) {
-            throw new Exception("Por favor, ingrese valores numéricos válidos para precios y cantidad.");
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese valores numéricos válidos para precios y cantidad.","error",JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -199,6 +199,7 @@ public class viewRegistro extends javax.swing.JFrame {
         tbnModificar.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
         tbnModificar.setText("MODIFICAR");
         tbnModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.blue, null, null));
+        tbnModificar.setEnabled(false);
         tbnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbnModificarActionPerformed(evt);
@@ -206,6 +207,7 @@ public class viewRegistro extends javax.swing.JFrame {
         });
 
         tbnEliminar.setText("ELIMINAR");
+        tbnEliminar.setEnabled(false);
         tbnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tbnEliminarActionPerformed(evt);
@@ -315,6 +317,7 @@ public class viewRegistro extends javax.swing.JFrame {
             String codigo = txtID.getText();
             if (controlador.verificarCodigo(codigo)) {
                 JOptionPane.showMessageDialog(this, "El Producto ya existe!");
+                return;
             }
 
             Producto p = new Producto(codigo,
@@ -381,24 +384,26 @@ public class viewRegistro extends javax.swing.JFrame {
         int ModiCan;
         ModiCan = Integer.parseInt(txtCantidad.getText());
 
-        lista.get(fila).setCodigo(ModiId);
-        lista.get(fila).setNombre(ModiNom);
-        lista.get(fila).setPrecioCompra(ModiComp);
-        lista.get(fila).setPrecioVenta(ModiVent);
-        lista.get(fila).setCantidad(ModiCan);
+        productos.get(fila).setCodigo(ModiId);
+        productos.get(fila).setNombre(ModiNom);
+        productos.get(fila).setPrecioCompra(ModiComp);
+        productos.get(fila).setPrecioVenta(ModiVent);
+        productos.get(fila).setCantidad(ModiCan);
 
         modelo.setRowCount(0);
-        for (int i = 0; i < lista.size(); i++) {
-            Object[] objs = {lista.get(i).getCodigo(), lista.get(i).getNombre(),
-                lista.get(i).getPrecioCompra(), lista.get(i).getPrecioVenta(), lista.get(i).getCantidad()};
+        for (int i = 0; i < productos.size(); i++) {
+            Object[] objs = {productos.get(i).getCodigo(), productos.get(i).getNombre(),
+                productos.get(i).getPrecioCompra(), productos.get(i).getPrecioVenta(), productos.get(i).getCantidad()};
 
             modelo.addRow(objs);
 
         }
         limpiarCampos();
+        JOptionPane.showMessageDialog(this, "Producto MODIFICADO con éxito");
+
         tbnAgregar.setEnabled(true);
-
-
+        tbnEliminar.setEnabled(false);
+        tbnModificar.setEnabled(false);
     }//GEN-LAST:event_tbnModificarActionPerformed
 
     private void tbnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbnEliminarActionPerformed
@@ -411,12 +416,14 @@ public class viewRegistro extends javax.swing.JFrame {
                     "Confirmación", JOptionPane.YES_NO_OPTION);
 
             if (confirmacion == JOptionPane.YES_OPTION) {
-                lista.remove(fila);
+                productos.remove(fila);
                 AgregarTabla();
                 limpiarCampos();
                 controlador.eliminarProducto(codigo); // Save data after deleting a product
                 JOptionPane.showMessageDialog(this, "Producto eliminado con éxito");
             }
+            tbnEliminar.setEnabled(false);
+            tbnModificar.setEnabled(false);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -442,7 +449,7 @@ public class viewRegistro extends javax.swing.JFrame {
     private void tblRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRegistroMouseClicked
         // TODO add your handling code here:
         fila = tblRegistro.rowAtPoint(evt.getPoint());
-        Producto p = lista.get(fila);
+        Producto p = productos.get(fila);
         // Llenar los campos de texto con la información del producto
         txtID.setText(String.valueOf(p.getCodigo()));
         txtNombre.setText(p.getNombre());
@@ -451,13 +458,14 @@ public class viewRegistro extends javax.swing.JFrame {
         txtCantidad.setText(String.valueOf(p.getCantidad()));
 
         tbnAgregar.setEnabled(false);
-
+        tbnEliminar.setEnabled(true);
+        tbnModificar.setEnabled(true);
     }//GEN-LAST:event_tblRegistroMouseClicked
 
-        // TODO add your handling code here:
-        /**
-         * @param args the command line arguments
-         */
+    // TODO add your handling code here:
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
