@@ -146,7 +146,7 @@ public class viewReportes extends javax.swing.JFrame {
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         // TODO add your handling code here:
         controladorReportes.generarReporteVentas();
-        dispose();
+        
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
