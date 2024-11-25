@@ -108,6 +108,11 @@ public class viewMenu2 extends javax.swing.JFrame {
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cerrar.png"))); // NOI18N
         jMenuItem1.setText("Cerrar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
@@ -202,6 +207,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         // TODO add your handling code here:
         viewProveedor a = new viewProveedor(); 
         a.setVisible(rootPaneCheckingEnabled);
+        dispose(); 
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -218,7 +224,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        dispose(); 
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -230,7 +236,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        dispose(); 
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -242,7 +248,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+       dispose(); 
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -255,8 +261,13 @@ public class viewMenu2 extends javax.swing.JFrame {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
+        dispose(); 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        dispose(); 
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
