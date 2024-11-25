@@ -1,7 +1,3 @@
- /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import controlador.controladorProductos;
@@ -36,9 +32,6 @@ public class viewProducto extends javax.swing.JFrame {
         }
 
         modelo = (DefaultTableModel) tblProductos.getModel();
-        //txtID.grabFocus();
-        //setLocationRelativeTo(null);
-
         tblProductos = new JTable(modelo);
         actualizarTabla();
         add(new JScrollPane(tblProductos), BorderLayout.CENTER);
@@ -488,6 +481,7 @@ public class viewProducto extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Productos");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
