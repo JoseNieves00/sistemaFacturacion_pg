@@ -115,7 +115,7 @@ public class controladorFacturacion {
             writer.newLine();
 
             for (ItemFactura item : factura.getItems()) {
-                writer.write(String.format("%s \t%s \t%d   \t\t%.2f  \t%.2f",
+                writer.write(String.format("%s \t%s \t%d   \t\t$%.2f  \t$%.2f",
                         item.getCodigo(),
                         item.getNombre(),
                         item.getCantidad(),

@@ -50,7 +50,6 @@ public class controladorProductos {
                                 Integer.parseInt(partes[4])
                         );
                         lista.add(producto);
-                        System.out.println("Producto cargado: " + producto.getCodigo()); // Verificación en consola
                     }
                 }
             }
