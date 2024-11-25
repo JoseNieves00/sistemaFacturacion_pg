@@ -96,6 +96,27 @@ public class viewProducto extends javax.swing.JFrame {
         }
     }
 
+        private void validarCamposModificar() throws Exception {
+        if (txtIDM.getText().trim().isEmpty() || txtNombreM.getText().trim().isEmpty() || txtCompraM.getText().trim().isEmpty() || txtVentaM.getText().trim().isEmpty() || txtCantidadM.getText().trim().isEmpty()) {
+            throw new Exception("Todos los campos deben estar llenos.");
+        }
+
+        try {
+            double precioCompra = Double.parseDouble(txtCompraM.getText());
+            double precioVenta = Double.parseDouble(txtVentaM.getText());
+            int cantidad = Integer.parseInt(txtCantidadM.getText());
+
+            if (precioCompra <= 0 || precioVenta <= 0) {
+                throw new Exception("Los precios deben ser mayores a 0.");
+            }
+            if (cantidad <= 0) {
+                throw new Exception("La cantidad debe ser mayor a 0.");
+            }
+        } catch (NumberFormatException e) {
+            throw new Exception("Por favor, ingrese valores numéricos válidos para precios y cantidad.");
+        }
+    }
+
     /**
      * Creates new form viewProducto
      */
@@ -127,15 +148,15 @@ public class viewProducto extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         btnModificarP = new javax.swing.JButton();
         ID1 = new javax.swing.JLabel();
-        txtID1 = new javax.swing.JTextField();
+        txtIDM = new javax.swing.JTextField();
         NOMBRE1 = new javax.swing.JLabel();
-        txtNombre1 = new javax.swing.JTextField();
+        txtNombreM = new javax.swing.JTextField();
         COMPRA1 = new javax.swing.JLabel();
-        txtCompra1 = new javax.swing.JTextField();
+        txtCompraM = new javax.swing.JTextField();
         VENTA1 = new javax.swing.JLabel();
-        txtVenta1 = new javax.swing.JTextField();
+        txtVentaM = new javax.swing.JTextField();
         CANTIDAD1 = new javax.swing.JLabel();
-        txtCantidad1 = new javax.swing.JTextField();
+        txtCantidadM = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -143,6 +164,10 @@ public class viewProducto extends javax.swing.JFrame {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
+
+        frmCrearPP.setTitle("Crear Producto");
+        frmCrearPP.setPreferredSize(new java.awt.Dimension(580, 430));
+        frmCrearPP.setSize(new java.awt.Dimension(586, 430));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
@@ -242,9 +267,9 @@ public class viewProducto extends javax.swing.JFrame {
                             .addComponent(txtVenta)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(COMPRA)
-                        .addGap(18, 18, 18)
+                        .addGap(15, 15, 15)
                         .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +298,7 @@ public class viewProducto extends javax.swing.JFrame {
                     .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(64, 64, 64)
                 .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout frmCrearPPLayout = new javax.swing.GroupLayout(frmCrearPP.getContentPane());
@@ -281,17 +306,19 @@ public class viewProducto extends javax.swing.JFrame {
         frmCrearPPLayout.setHorizontalGroup(
             frmCrearPPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(frmCrearPPLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         frmCrearPPLayout.setVerticalGroup(
             frmCrearPPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(frmCrearPPLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
+
+        frmModificarPP.setSize(new java.awt.Dimension(568, 424));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
@@ -315,50 +342,50 @@ public class viewProducto extends javax.swing.JFrame {
         ID1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         ID1.setText("ID");
 
-        txtID1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtID1.addActionListener(new java.awt.event.ActionListener() {
+        txtIDM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtIDM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtID1ActionPerformed(evt);
+                txtIDMActionPerformed(evt);
             }
         });
 
         NOMBRE1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         NOMBRE1.setText("NOMBRE");
 
-        txtNombre1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtNombre1.addActionListener(new java.awt.event.ActionListener() {
+        txtNombreM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtNombreM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombre1ActionPerformed(evt);
+                txtNombreMActionPerformed(evt);
             }
         });
 
         COMPRA1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         COMPRA1.setText("PRECIO COMPRA");
 
-        txtCompra1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCompra1.addActionListener(new java.awt.event.ActionListener() {
+        txtCompraM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtCompraM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCompra1ActionPerformed(evt);
+                txtCompraMActionPerformed(evt);
             }
         });
 
         VENTA1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         VENTA1.setText("PRECIO VENTA");
 
-        txtVenta1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtVenta1.addActionListener(new java.awt.event.ActionListener() {
+        txtVentaM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtVentaM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtVenta1ActionPerformed(evt);
+                txtVentaMActionPerformed(evt);
             }
         });
 
         CANTIDAD1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         CANTIDAD1.setText("CANTIDAD");
 
-        txtCantidad1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCantidad1.addActionListener(new java.awt.event.ActionListener() {
+        txtCantidadM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtCantidadM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidad1ActionPerformed(evt);
+                txtCantidadMActionPerformed(evt);
             }
         });
 
@@ -381,8 +408,8 @@ public class viewProducto extends javax.swing.JFrame {
                                     .addComponent(NOMBRE1))
                                 .addGap(91, 91, 91)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                    .addComponent(txtID1)))
+                                    .addComponent(txtNombreM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                    .addComponent(txtIDM)))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(COMPRA1)
@@ -390,9 +417,9 @@ public class viewProducto extends javax.swing.JFrame {
                                     .addComponent(VENTA1))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCompra1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                    .addComponent(txtCantidad1)
-                                    .addComponent(txtVenta1)))))
+                                    .addComponent(txtCompraM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                    .addComponent(txtCantidadM)
+                                    .addComponent(txtVentaM)))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -406,23 +433,23 @@ public class viewProducto extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ID1)
-                    .addComponent(txtID1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIDM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NOMBRE1)
-                    .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(COMPRA1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCompra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCompraM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(VENTA1)
-                    .addComponent(txtVenta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtVentaM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CANTIDAD1)
-                    .addComponent(txtCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCantidadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
@@ -549,9 +576,9 @@ public class viewProducto extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -567,13 +594,13 @@ public class viewProducto extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         fila = tblProductos.rowAtPoint(evt.getPoint());
-        System.out.println(fila);
 
-        txtID.setText((String) tblProductos.getValueAt(fila, 0));
-        txtNombre.setText((String) tblProductos.getValueAt(fila, 1));
-        txtCompra.setText((String) tblProductos.getValueAt(fila, 2));
-        txtVenta.setText((String) tblProductos.getValueAt(fila, 3));
-        txtCantidad.setText((String) tblProductos.getValueAt(fila, 4));
+        txtIDM.setText(String.valueOf(tblProductos.getValueAt(fila, 0)));
+        txtNombreM.setText(String.valueOf(tblProductos.getValueAt(fila, 1)));
+        txtCompraM.setText(String.valueOf(tblProductos.getValueAt(fila, 2)));
+        txtVentaM.setText(String.valueOf(tblProductos.getValueAt(fila, 3)));
+        txtCantidadM.setText(String.valueOf(tblProductos.getValueAt(fila, 4)));
+       
         btnModificar.setEnabled(true);
         btnEliminar.setEnabled(true);
     }//GEN-LAST:event_tblProductosMouseClicked
@@ -664,10 +691,10 @@ public class viewProducto extends javax.swing.JFrame {
                 return;
             }
 
-            validarCampos();
+            validarCamposModificar();
 
             String codigo = (String) modelo.getValueAt(fila, 0);
-            Producto producto = new Producto(txtID.getText().trim(), txtNombre.getText().trim(), Double.parseDouble(txtCompra.getText()), Double.parseDouble(txtVenta.getText()), Integer.parseInt(txtCantidad.getText()));
+            Producto producto = new Producto(txtIDM.getText().trim(), txtNombreM.getText().trim(), Double.parseDouble(txtCompraM.getText()), Double.parseDouble(txtVentaM.getText()), Integer.parseInt(txtCantidadM.getText()));
             controlador.modificarProducto(codigo, producto);
             actualizarTabla();
             limpiarCampos();
@@ -679,25 +706,25 @@ public class viewProducto extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnModificarPActionPerformed
 
-    private void txtID1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtID1ActionPerformed
+    private void txtIDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtID1ActionPerformed
+    }//GEN-LAST:event_txtIDMActionPerformed
 
-    private void txtNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre1ActionPerformed
+    private void txtNombreMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre1ActionPerformed
+    }//GEN-LAST:event_txtNombreMActionPerformed
 
-    private void txtCompra1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCompra1ActionPerformed
+    private void txtCompraMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCompraMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCompra1ActionPerformed
+    }//GEN-LAST:event_txtCompraMActionPerformed
 
-    private void txtVenta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVenta1ActionPerformed
+    private void txtVentaMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtVenta1ActionPerformed
+    }//GEN-LAST:event_txtVentaMActionPerformed
 
-    private void txtCantidad1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidad1ActionPerformed
+    private void txtCantidadMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidad1ActionPerformed
+    }//GEN-LAST:event_txtCantidadMActionPerformed
 
     /**
      * @param args the command line arguments
@@ -765,15 +792,15 @@ public class viewProducto extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblProductos;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtCantidad1;
+    private javax.swing.JTextField txtCantidadM;
     private javax.swing.JTextField txtCompra;
-    private javax.swing.JTextField txtCompra1;
+    private javax.swing.JTextField txtCompraM;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtID1;
+    private javax.swing.JTextField txtIDM;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtNombre1;
+    private javax.swing.JTextField txtNombreM;
     private javax.swing.JTextField txtVenta;
-    private javax.swing.JTextField txtVenta1;
+    private javax.swing.JTextField txtVentaM;
     // End of variables declaration//GEN-END:variables
 
 }
