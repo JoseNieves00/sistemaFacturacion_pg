@@ -78,21 +78,7 @@ public class viewFacturacion extends javax.swing.JFrame {
         txtSubTotal.setText(String.format("$%.0f", subtotal)); // Actualizar el texto de la etiqueta
         txtTotal.setText(String.format("$%.0f", iva)); // Actualizar el texto de la etiqueta
 
-    }
-
-    private void cargarProductosEnTabla(int cantidad, double subtotal) {
-        modeloTabla.setRowCount(0);
-        for (Producto producto : controladorProductos.listarProductos()) {
-            modeloTabla.addRow(new Object[]{
-                producto.getCodigo(),
-                producto.getNombre(),
-                cantidad,
-                producto.getPrecioVenta(),
-                subtotal
-            });
-        }
-        calcularTotal();
-    }
+    }    
 
     private void agregarProductosFactura() {
         // Obtener el código del producto y la cantidad desde los campos de texto
@@ -138,8 +124,6 @@ public class viewFacturacion extends javax.swing.JFrame {
                 modeloTabla.setValueAt(nuevaCantidad, i, 2); // Actualizar cantidad
                 modeloTabla.setValueAt(subtotal, i, 4); // Actualizar subtotal
 
-                cargarProductosEnTabla(nuevaCantidad, subtotal);
-
                 productoExistente = true;
                 break;
             }
@@ -148,7 +132,13 @@ public class viewFacturacion extends javax.swing.JFrame {
         // Si el producto no está en la factura, agregarlo como nueva fila
         if (!productoExistente) {
             double subtotal = cantidad * producto.getPrecioVenta();
-            cargarProductosEnTabla(cantidad, subtotal);
+            modeloTabla.addRow(new Object[]{
+                producto.getCodigo(),
+                producto.getNombre(),
+                cantidad,
+                producto.getPrecioVenta(),
+                subtotal
+            });
         }
 
         // Reducir el stock temporalmente en el inventario (solo en memoria)
@@ -159,6 +149,7 @@ public class viewFacturacion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al reducir stock: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        calcularTotal();
 
     }
 
@@ -801,8 +792,6 @@ public class viewFacturacion extends javax.swing.JFrame {
             int indexMetodoPago = cmbPago.getSelectedIndex();
 
             String metodoPago = cmbPago.getItemAt(indexMetodoPago);
-
-            System.out.println(metodoPago);
 
             if (indexMetodoPago != 0) {
                 factura(valorRecibido, cambio, metodoPago);
