@@ -2,7 +2,6 @@ package controlador;
 
 import java.io.*;
 import modelo.Empresa;
-import modelo.Producto;
 
 public class controladorEmpresa {
 

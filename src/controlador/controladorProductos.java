@@ -69,7 +69,7 @@ public class controladorProductos {
 
     // Guardar todos los proveedores en el archivo
     public void guardarProducto() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoProductos, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoProductos))) {
             for (Producto producto : productos) {
                 writer.write(producto.toString());
                 writer.newLine();

@@ -5,6 +5,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Empresa;
 import modelo.Factura;
 import modelo.ItemFactura;
 import modelo.Producto;
@@ -14,10 +15,12 @@ public class controladorFacturacion {
     private final String carpetaFacturas = "facturas/";
     private final String archivoContador = "contador_facturas.txt";
     private controladorProductos controladorProductos;
+    private controladorEmpresa controladorEmpresa;
     private int contadorFacturas;
 
     public controladorFacturacion() throws IOException {
         controladorProductos = new controladorProductos();
+        controladorEmpresa = new controladorEmpresa();
 
         // Crear carpeta de facturas si no existe
         File carpeta = new File(carpetaFacturas);
@@ -58,12 +61,17 @@ public class controladorFacturacion {
     }
 
     // Crear una factura con los productos seleccionados
-    public Factura crearFactura(ArrayList<ItemFactura> items, double recibido, double cambio,String metodoPago) throws IOException {
+    public Factura crearFactura(ArrayList<ItemFactura> items, double recibido, double cambio, String metodoPago) throws IOException {
         String numeroFactura = String.format("FACT-%05d", contadorFacturas);
         Factura factura = new Factura(numeroFactura);
+
         factura.setCambio(cambio);
         factura.setRecibido(recibido);
         factura.setMetodoPago(metodoPago);
+
+        Empresa empresa = new Empresa();
+
+        empresa = controladorEmpresa.getEmpresa();
 
         for (ItemFactura item : items) {
             Producto producto = controladorProductos.buscarProducto(item.getCodigo());
@@ -93,7 +101,7 @@ public class controladorFacturacion {
 
         // Guardar factura y actualizar el contador
         controladorProductos.guardarProductos(); // Actualizar inventario
-        guardarFacturaEnArchivo(factura);        // Guardar la factura en el archivo
+        guardarFacturaEnArchivo(factura, empresa);        // Guardar la factura en el archivo
         contadorFacturas++;
         guardarContadorFacturas();
 
@@ -101,13 +109,23 @@ public class controladorFacturacion {
     }
 
     // Guardar una factura en un archivo
-    private void guardarFacturaEnArchivo(Factura factura) throws IOException {
+    private void guardarFacturaEnArchivo(Factura factura, Empresa empresa) throws IOException {
         String archivoFactura = carpetaFacturas + factura.getNumeroFactura() + ".txt";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoFactura))) {
+            writer.write(empresa.getNombre());
+            writer.newLine();
+            writer.write("NIT " + empresa.getNit());
+            writer.newLine();
+            writer.write("Dirección " + empresa.getDireccion());
+            writer.newLine();
+            writer.write("Telefono " + empresa.getTelefono());
+            writer.newLine();
+            writer.newLine();
             writer.write("Factura: " + factura.getNumeroFactura());
             writer.newLine();
             writer.write("Fecha: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(factura.getFecha()));
+            writer.newLine();
             writer.newLine();
             writer.write("---------------------------------------------------");
             writer.newLine();
@@ -132,14 +150,14 @@ public class controladorFacturacion {
             writer.newLine();
             writer.write("Total: $" + factura.getTotal());
             writer.newLine();
-            writer.write("\nPago: \t$" + factura.getRecibido() + " \t"+factura.getMetodoPago());
+            writer.write("\nPago: \t$" + factura.getRecibido() + " \t" + factura.getMetodoPago());
             writer.newLine();
             writer.write("Cambio: $" + factura.getCambio());
             writer.newLine();
             writer.write("\n---------------------------------------------------");
             writer.newLine();
             writer.write("\nMuchas gracias por su compra!");
-            
+
         }
 
         JOptionPane.showMessageDialog(null, "Factura generada Exitosamente");
