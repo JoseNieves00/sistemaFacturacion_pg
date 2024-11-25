@@ -8,9 +8,12 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Producto;
-import modelo.Proveedor;
 
 public class controladorProductos {
+
+    public static void modificarPoductos(String codigo, Producto productoModificado) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
     public boolean verificarCodigo(String codigo) {
         for (Producto p : productos) {
@@ -87,10 +90,10 @@ public class controladorProductos {
         }
     }
 
-    public void eliminarProducto(String nit) throws IOException {
+    public void eliminarProducto(String codigo) throws IOException {
         // Buscar y eliminar el proveedor con el NIT
         for (int i = 0; i < productos.size(); i++) {
-            if (productos.get(i).getCodigo().equals(nit)) {
+            if (productos.get(i).getCodigo().equals(codigo)) {
                 productos.remove(i); // Eliminar proveedor de la lista
                 break;
             }
@@ -115,9 +118,9 @@ public class controladorProductos {
         throw new IllegalArgumentException("Producto no encontrado en el inventario.");
     }
 
-    public void modificarProveedor(String nit, Producto nuevoProducto) throws IOException {
+    public void modificarProducto(String codigo, Producto nuevoProducto) throws IOException {
         for (int i = 0; i < productos.size(); i++) {
-            if (productos.get(i).getCodigo().equals(nit)) {
+            if (productos.get(i).getCodigo().equals(codigo)) {
                 productos.set(i, nuevoProducto); // Actualizar el proveedor con los nuevos datos
                 break;
             }
