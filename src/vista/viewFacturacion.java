@@ -17,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Factura;
 import modelo.ItemFactura;
 import modelo.Producto;
-import modelo.Proveedor;
 
 public class viewFacturacion extends javax.swing.JFrame {
 
@@ -223,6 +222,8 @@ public class viewFacturacion extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
 
+        frmFinalizar.setTitle("Finalizar Venta");
+
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -333,6 +334,7 @@ public class viewFacturacion extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Facturación");
         setSize(new java.awt.Dimension(1398, 834));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
