@@ -5,23 +5,75 @@
 package vista;
 
 import controlador.controladorEmpresa;
+import controlador.controladorLogin;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Empresa;
+import modelo.Usuario;
 
 public class viewSettingsEmpresa extends javax.swing.JFrame {
 
     private controladorEmpresa controladorEmpresa;
+    private controladorLogin controladorLogin;
+    private Usuario usuarioActivo;
 
     /**
      * Creates new form viewSettingsEmpresa
      */
     public viewSettingsEmpresa() throws IOException {
         controladorEmpresa = new controladorEmpresa();
+        controladorLogin = new controladorLogin();
+
         initComponents();
         cargarDatosEmpresa();
+        cargarDatosUsuario();
+        // Configurar comportamiento al cerrar la ventana
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                // Abrir el menú principal antes de cerrar
+                viewMenu2 m;
+                try {
+                    m = new viewMenu2();
+                    m.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                dispose(); // Cerrar esta ventana
+            }
+        });
+    }
+
+    private void cargarDatosUsuario() {
+        usuarioActivo = controladorLogin.getUsuarioActivo();
+
+        if (usuarioActivo == null) {
+            JOptionPane.showMessageDialog(this, "No hay un usuario activo. Por favor, inicie sesión.", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose(); // Cerrar la ventana si no hay usuario activo
+            return;
+        }
+
+        String role = usuarioActivo.getRole().toUpperCase();
+        System.out.println(role);
+
+        if (usuarioActivo.getRole().toUpperCase().equals("ADMINISTRADOR")) {
+            txtNombre.setFocusable(true);
+            txtNombre.setEnabled(true);
+            txtTelefono.setFocusable(true);
+            txtTelefono.setEnabled(true);
+            txtDireccion.setFocusable(true);
+            txtDireccion.setEnabled(true);
+            txtNit.setFocusable(true);
+            txtNit.setEnabled(true);
+
+            btnModificar.setEnabled(true);
+        }
+
+        System.out.println("Usuario activo: " + usuarioActivo.getNombre());
     }
 
     private void cargarDatosEmpresa() {
@@ -87,27 +139,36 @@ public class viewSettingsEmpresa extends javax.swing.JFrame {
 
         txtNombre.setToolTipText("");
         txtNombre.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtNombre.setEnabled(false);
+        txtNombre.setFocusable(false);
 
         jLabel3.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         jLabel3.setText("DIRECCIÓN");
 
         txtDireccion.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtDireccion.setEnabled(false);
+        txtDireccion.setFocusable(false);
 
         jLabel4.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         jLabel4.setText("TELÉFONO");
 
         txtTelefono.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtTelefono.setEnabled(false);
+        txtTelefono.setFocusable(false);
 
         jLabel5.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         jLabel5.setText("NIT");
 
         txtNit.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtNit.setEnabled(false);
+        txtNit.setFocusable(false);
 
         btnModificar.setBackground(new java.awt.Color(0, 0, 0));
         btnModificar.setFont(new java.awt.Font("Book Antiqua", 1, 14)); // NOI18N
         btnModificar.setForeground(new java.awt.Color(255, 255, 255));
         btnModificar.setText("Modificar Datos");
         btnModificar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.white, java.awt.Color.darkGray, java.awt.Color.gray));
+        btnModificar.setEnabled(false);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -182,7 +243,7 @@ public class viewSettingsEmpresa extends javax.swing.JFrame {
                 .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -217,8 +278,13 @@ public class viewSettingsEmpresa extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        viewMenu2 m = new viewMenu2();
-        m.setVisible(rootPaneCheckingEnabled);
+        viewMenu2 m;
+        try {
+            m = new viewMenu2();
+            m.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

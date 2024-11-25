@@ -19,6 +19,21 @@ public class viewReportes extends javax.swing.JFrame {
     public viewReportes() throws IOException {
         controladorReportes = new controladorReportes();
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                // Abrir el menú principal antes de cerrar
+                viewMenu2 m;
+                try {
+                    m = new viewMenu2();
+                    m.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                dispose(); // Cerrar esta ventana
+            }
+        });
     }
 
     /**
@@ -141,8 +156,13 @@ public class viewReportes extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        viewMenu2 m = new viewMenu2();
-        m.setVisible(rootPaneCheckingEnabled);
+        viewMenu2 m;
+        try {
+            m = new viewMenu2();
+            m.setVisible(rootPaneCheckingEnabled);
+        } catch (IOException ex) {
+            Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

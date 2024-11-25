@@ -1,10 +1,10 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
 
-import controlador.controladorProductos;
+import controlador.controladorLogin;
 import java.awt.BorderLayout;
 import modelo.Producto;
 import java.io.IOException;
@@ -15,30 +15,28 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import modelo.Usuario;
 
 /**
  *
  * @author hp
  */
-public class viewProducto extends javax.swing.JFrame {
+public class viewUsuario extends javax.swing.JFrame {
 
-    private controladorProductos controlador;
+    private controladorLogin controlador;
     private DefaultTableModel modelo;
     private int fila;
 
-    public viewProducto() throws IOException {
+    public viewUsuario() throws IOException {
         initComponents();
         try {
-            controlador = new controladorProductos();
+            controlador = new controladorLogin();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar los proveedores: " + e.getMessage());
             return;
         }
 
         modelo = (DefaultTableModel) tblProductos.getModel();
-        //txtID.grabFocus();
-        //setLocationRelativeTo(null);
-
         tblProductos = new JTable(modelo);
         actualizarTabla();
         add(new JScrollPane(tblProductos), BorderLayout.CENTER);
@@ -62,24 +60,19 @@ public class viewProducto extends javax.swing.JFrame {
     }
 
     private void actualizarTabla() {
-        limpiarTabla();
-        ArrayList<Producto> productos = controlador.listarProductos();
-        if (productos != null && !productos.isEmpty()) {
-            for (Producto producto : productos) {
-                modelo.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getPrecioCompra(), producto.getPrecioVenta(), producto.getCantidad()});
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontraron productos.");
+        modelo.setRowCount(0);
+
+        for (Usuario usuario : controlador.listarUsuarios()) {
+            String passwordOculta = "*".repeat(usuario.getPassword().length());
+            modelo.addRow(new Object[]{usuario.getUsername(), passwordOculta, usuario.getNombre(), usuario.getRole()});
         }
-        tblProductos.setModel(modelo);
     }
 
     private void limpiarCampos() {
-        txtID.setText("");
+        txtUsername.setText("");
+        txtPassword.setText("");
+        cmbRole.setSelectedIndex(0);
         txtNombre.setText("");
-        txtCompra.setText("");
-        txtCantidad.setText("");
-        txtVenta.setText("");
         btnAgregar.setEnabled(true);
     }
 
@@ -91,44 +84,19 @@ public class viewProducto extends javax.swing.JFrame {
     }
 
     private void validarCampos() throws Exception {
-        if (txtID.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtCompra.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty() || txtVenta.getText().trim().isEmpty()) {
+        int indexRole = cmbRole.getSelectedIndex();
+
+        if (txtUsername.getText().trim().isEmpty() || txtPassword.getText().trim().isEmpty() || cmbRole.getItemAt(indexRole).trim().isEmpty() || txtNombre.getText().trim().isEmpty()) {
             throw new Exception("Todos los campos deben estar llenos.");
-        }
-
-        try {
-            double precioCompra = Double.parseDouble(txtCompra.getText());
-            double precioVenta = Double.parseDouble(txtCantidad.getText());
-            int cantidad = Integer.parseInt(txtVenta.getText());
-
-            if (precioCompra <= 0 || precioVenta <= 0) {
-                throw new Exception("Los precios deben ser mayores a 0.");
-            }
-            if (cantidad <= 0) {
-                throw new Exception("La cantidad debe ser mayor a 0.");
-            }
-        } catch (NumberFormatException e) {
-            throw new Exception("Por favor, ingrese valores numéricos válidos para precios y cantidad.");
         }
     }
 
     private void validarCamposModificar() throws Exception {
-        if (txtIDM.getText().trim().isEmpty() || txtNombreM.getText().trim().isEmpty() || txtCompraM.getText().trim().isEmpty() || txtVentaM.getText().trim().isEmpty() || txtCantidadM.getText().trim().isEmpty()) {
+        int indexRoleM = cmbRoleM.getSelectedIndex();
+
+        if (txtUsernameM.getText().trim().isEmpty() || txtPasswordM.getText().trim().isEmpty() || txtNombreM.getText().trim().isEmpty() || cmbRoleM.getItemAt(indexRoleM).trim().isEmpty()) {
             throw new Exception("Todos los campos deben estar llenos.");
-        }
 
-        try {
-            double precioCompra = Double.parseDouble(txtCompraM.getText());
-            double precioVenta = Double.parseDouble(txtVentaM.getText());
-            int cantidad = Integer.parseInt(txtCantidadM.getText());
-
-            if (precioCompra <= 0 || precioVenta <= 0) {
-                throw new Exception("Los precios deben ser mayores a 0.");
-            }
-            if (cantidad <= 0) {
-                throw new Exception("La cantidad debe ser mayor a 0.");
-            }
-        } catch (NumberFormatException e) {
-            throw new Exception("Por favor, ingrese valores numéricos válidos para precios y cantidad.");
         }
     }
 
@@ -148,30 +116,26 @@ public class viewProducto extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         btnAgregarP = new javax.swing.JButton();
-        ID = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
         NOMBRE = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         COMPRA = new javax.swing.JLabel();
-        txtCompra = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
         VENTA = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
         CANTIDAD = new javax.swing.JLabel();
-        txtVenta = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        cmbRole = new javax.swing.JComboBox<>();
         frmModificarPP = new javax.swing.JFrame();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         btnModificarP = new javax.swing.JButton();
-        ID1 = new javax.swing.JLabel();
-        txtIDM = new javax.swing.JTextField();
-        NOMBRE1 = new javax.swing.JLabel();
+        NOMBRE2 = new javax.swing.JLabel();
+        txtUsernameM = new javax.swing.JTextField();
+        COMPRA2 = new javax.swing.JLabel();
+        txtPasswordM = new javax.swing.JTextField();
+        VENTA2 = new javax.swing.JLabel();
         txtNombreM = new javax.swing.JTextField();
-        COMPRA1 = new javax.swing.JLabel();
-        txtCompraM = new javax.swing.JTextField();
-        VENTA1 = new javax.swing.JLabel();
-        txtVentaM = new javax.swing.JTextField();
-        CANTIDAD1 = new javax.swing.JLabel();
-        txtCantidadM = new javax.swing.JTextField();
+        CANTIDAD2 = new javax.swing.JLabel();
+        cmbRoleM = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -189,7 +153,7 @@ public class viewProducto extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("CREAR PRODUCTO");
+        jLabel5.setText("CREAR USUARIO");
 
         btnAgregarP.setBackground(new java.awt.Color(170, 190, 190));
         btnAgregarP.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
@@ -202,18 +166,31 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
-        ID.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        ID.setText("ID");
+        NOMBRE.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        NOMBRE.setText("USERNAME");
 
-        txtID.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtID.addActionListener(new java.awt.event.ActionListener() {
+        txtUsername.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDActionPerformed(evt);
+                txtUsernameActionPerformed(evt);
             }
         });
 
-        NOMBRE.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        NOMBRE.setText("NOMBRE");
+        COMPRA.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        COMPRA.setText("PASSWORD");
+
+        txtPassword.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
+
+        VENTA.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        VENTA.setText("NOMBRE");
+
+        CANTIDAD.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        CANTIDAD.setText("ROLE");
 
         txtNombre.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -222,33 +199,10 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
-        COMPRA.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        COMPRA.setText("PRECIO COMPRA");
-
-        txtCompra.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCompra.addActionListener(new java.awt.event.ActionListener() {
+        cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRADOR", "CAJERO" }));
+        cmbRole.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCompraActionPerformed(evt);
-            }
-        });
-
-        VENTA.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        VENTA.setText("PRECIO VENTA");
-
-        txtCantidad.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadActionPerformed(evt);
-            }
-        });
-
-        CANTIDAD.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        CANTIDAD.setText("CANTIDAD");
-
-        txtVenta.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtVenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtVentaActionPerformed(evt);
+                cmbRoleActionPerformed(evt);
             }
         });
 
@@ -264,26 +218,22 @@ public class viewProducto extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(NOMBRE))
-                        .addGap(91, 91, 91)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                            .addComponent(txtID)))
+                        .addComponent(NOMBRE, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(VENTA)
                             .addComponent(CANTIDAD))
-                        .addGap(35, 35, 35)
+                        .addGap(92, 92, 92)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                            .addComponent(txtCantidad)))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(cmbRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(COMPRA)
-                        .addGap(15, 15, 15)
-                        .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(65, 65, 65)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -291,27 +241,23 @@ public class viewProducto extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel5)
-                .addGap(28, 28, 28)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ID)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(64, 64, 64)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NOMBRE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(COMPRA, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(VENTA)
-                    .addComponent(txtVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CANTIDAD)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(64, 64, 64)
+                    .addComponent(cmbRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61)
                 .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -340,7 +286,7 @@ public class viewProducto extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("MODIFICAR PRODUCTO");
+        jLabel9.setText("MODIFICAR USUARIO");
 
         btnModificarP.setBackground(new java.awt.Color(150, 170, 190));
         btnModificarP.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
@@ -354,18 +300,28 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
-        ID1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        ID1.setText("ID");
+        NOMBRE2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        NOMBRE2.setText("USERNAME");
 
-        txtIDM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtIDM.addActionListener(new java.awt.event.ActionListener() {
+        txtUsernameM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtUsernameM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDMActionPerformed(evt);
+                txtUsernameMActionPerformed(evt);
             }
         });
 
-        NOMBRE1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        NOMBRE1.setText("NOMBRE");
+        COMPRA2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        COMPRA2.setText("PASSWORD");
+
+        txtPasswordM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtPasswordM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordMActionPerformed(evt);
+            }
+        });
+
+        VENTA2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        VENTA2.setText("NOMBRE");
 
         txtNombreM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         txtNombreM.addActionListener(new java.awt.event.ActionListener() {
@@ -374,33 +330,13 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
-        COMPRA1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        COMPRA1.setText("PRECIO COMPRA");
+        CANTIDAD2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        CANTIDAD2.setText("ROLE");
 
-        txtCompraM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCompraM.addActionListener(new java.awt.event.ActionListener() {
+        cmbRoleM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADMINISTRADOR", "CAJERO" }));
+        cmbRoleM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCompraMActionPerformed(evt);
-            }
-        });
-
-        VENTA1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        VENTA1.setText("PRECIO VENTA");
-
-        txtVentaM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtVentaM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtVentaMActionPerformed(evt);
-            }
-        });
-
-        CANTIDAD1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        CANTIDAD1.setText("CANTIDAD");
-
-        txtCantidadM.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
-        txtCantidadM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadMActionPerformed(evt);
+                cmbRoleMActionPerformed(evt);
             }
         });
 
@@ -415,59 +351,59 @@ public class viewProducto extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ID1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(NOMBRE1))
-                                .addGap(91, 91, 91)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombreM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                    .addComponent(txtIDM)))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(COMPRA1)
-                                    .addComponent(CANTIDAD1)
-                                    .addComponent(VENTA1))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCompraM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                    .addComponent(txtCantidadM)
-                                    .addComponent(txtVentaM)))))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(224, 224, 224)
+                        .addComponent(cmbRoleM, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(NOMBRE2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtUsernameM, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(VENTA2)
+                                .addComponent(CANTIDAD2))
+                            .addGap(92, 92, 92)
+                            .addComponent(txtNombreM, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(COMPRA2)
+                            .addGap(65, 65, 65)
+                            .addComponent(txtPasswordM, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(57, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel9)
-                .addGap(29, 29, 29)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ID1)
-                    .addComponent(txtIDM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NOMBRE1)
-                    .addComponent(txtNombreM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(COMPRA1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCompraM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(VENTA1)
-                    .addComponent(txtVentaM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CANTIDAD1)
-                    .addComponent(txtCantidadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                .addComponent(cmbRoleM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
                 .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGap(132, 132, 132)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(NOMBRE2)
+                        .addComponent(txtUsernameM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(COMPRA2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPasswordM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(VENTA2)
+                        .addComponent(txtNombreM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(CANTIDAD2)
+                    .addContainerGap(133, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout frmModificarPPLayout = new javax.swing.GroupLayout(frmModificarPP.getContentPane());
@@ -493,7 +429,7 @@ public class viewProducto extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("PRODUCTOS - SISTEMA DE FACTURACION  E INVENTARIO");
+        jLabel1.setText("GESTION USUARIOS - SISTEMA DE FACTURACION  E INVENTARIO");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.gray, null));
 
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
@@ -501,11 +437,11 @@ public class viewProducto extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "NOMBRE", "PRECIO COMPRA", "PRECIO VENTA", "CANTIDAD"
+                "USERNAME", "PASSWORD", "NOMBRE", "ROLE"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -626,11 +562,19 @@ public class viewProducto extends javax.swing.JFrame {
 
         fila = tblProductos.rowAtPoint(evt.getPoint());
 
-        txtIDM.setText(String.valueOf(tblProductos.getValueAt(fila, 0)));
-        txtNombreM.setText(String.valueOf(tblProductos.getValueAt(fila, 1)));
-        txtCompraM.setText(String.valueOf(tblProductos.getValueAt(fila, 2)));
-        txtVentaM.setText(String.valueOf(tblProductos.getValueAt(fila, 3)));
-        txtCantidadM.setText(String.valueOf(tblProductos.getValueAt(fila, 4)));
+        txtUsernameM.setText(String.valueOf(tblProductos.getValueAt(fila, 0)));
+        txtPasswordM.setText(String.valueOf(tblProductos.getValueAt(fila, 1)));
+        txtNombreM.setText(String.valueOf(tblProductos.getValueAt(fila, 2)));
+
+        String roleTabla = String.valueOf(tblProductos.getValueAt(fila, 3)).toUpperCase();
+
+        System.out.println(roleTabla);
+
+        if (roleTabla.equals("ADMINISTRADOR")) {
+            cmbRoleM.setSelectedIndex(0);
+        } else {
+            cmbRoleM.setSelectedIndex(1);
+        }
 
         btnModificar.setEnabled(true);
         btnEliminar.setEnabled(true);
@@ -639,7 +583,8 @@ public class viewProducto extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         frmModificarPP.setVisible(true);
-        frmCrearPP.setSize(586, 480);
+        txtPasswordM.setText("");
+        frmModificarPP.setSize(586, 450);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -653,7 +598,7 @@ public class viewProducto extends javax.swing.JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 String codigo = (String) modelo.getValueAt(fila, 0);
-                controlador.eliminarProducto(codigo);
+                controlador.eliminarUsuario(codigo);
                 actualizarTabla();
                 limpiarCampos();
                 JOptionPane.showMessageDialog(this, "Producto eliminado con éxito");
@@ -677,16 +622,10 @@ public class viewProducto extends javax.swing.JFrame {
     private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
         // TODO add your handling code here:
         try {
+            int indexRole = cmbRole.getSelectedIndex();
+
             validarCampos();
-            String codigo = txtID.getText().trim();
-
-            if (controlador.verificarCodigo(codigo)) {
-                JOptionPane.showMessageDialog(this, "El Producto ya existe!");
-                return;
-            }
-
-            Producto p = new Producto(codigo, txtNombre.getText().trim(), Double.parseDouble(txtCompra.getText()), Double.parseDouble(txtVenta.getText()), Integer.parseInt(txtCantidad.getText()));
-            controlador.agregarProducto(p);
+            controlador.agregarUsuario(txtUsername.getText(), txtPassword.getText(), txtNombre.getText(), cmbRole.getItemAt(indexRole));
             actualizarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(this, "Producto agregado con éxito");
@@ -696,46 +635,31 @@ public class viewProducto extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
-    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDActionPerformed
+    }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void txtCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCompraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCompraActionPerformed
-
-    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadActionPerformed
-
-    private void txtVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtVentaActionPerformed
-
     private void btnModificarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarPActionPerformed
         // TODO add your handling code here:
         frmModificarPP.setVisible(false);
-
         try {
-            if (fila < 0) {
-                JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
+            int indexRoleM = cmbRoleM.getSelectedIndex();
             validarCamposModificar();
-
-            String codigo = (String) modelo.getValueAt(fila, 0);
-            Producto producto = new Producto(txtIDM.getText().trim(), txtNombreM.getText().trim(), Double.parseDouble(txtCompraM.getText()), Double.parseDouble(txtVentaM.getText()), Integer.parseInt(txtCantidadM.getText()));
-            controlador.modificarProducto(codigo, producto);
+            Usuario usuario = new Usuario(txtUsernameM.getText(), txtPasswordM.getText(), txtNombreM.getText(), cmbRoleM.getItemAt(indexRoleM));
+            controlador.modificarUsuario(txtUsernameM.getText(), usuario);
             actualizarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(this, "Producto modificado con éxito");
             btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
+            btnEliminar.setEnabled(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -743,37 +667,37 @@ public class viewProducto extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnModificarPActionPerformed
 
-    private void txtIDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDMActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDMActionPerformed
+        viewMenu2 m;
+        try {
+            m = new viewMenu2();
+            m.setVisible(rootPaneCheckingEnabled);
+        } catch (IOException ex) {
+            Logger.getLogger(viewUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtUsernameMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameMActionPerformed
+
+    private void txtPasswordMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordMActionPerformed
 
     private void txtNombreMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreMActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreMActionPerformed
 
-    private void txtCompraMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCompraMActionPerformed
+    private void cmbRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRoleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCompraMActionPerformed
+    }//GEN-LAST:event_cmbRoleActionPerformed
 
-    private void txtVentaMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentaMActionPerformed
+    private void cmbRoleMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRoleMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtVentaMActionPerformed
-
-    private void txtCantidadMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadMActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadMActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-          viewMenu2 m;
-        try {
-            m = new viewMenu2();
-            m.setVisible(rootPaneCheckingEnabled);
-        } catch (IOException ex) {
-            Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_cmbRoleMActionPerformed
 
     /**
      * @param args the command line arguments
@@ -792,23 +716,24 @@ public class viewProducto extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(viewProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(viewProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(viewProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(viewProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new viewProducto().setVisible(true);
+                    new viewUsuario().setVisible(true);
                 } catch (IOException ex) {
-                    Logger.getLogger(viewProducto.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(viewUsuario.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -816,20 +741,20 @@ public class viewProducto extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CANTIDAD;
-    private javax.swing.JLabel CANTIDAD1;
+    private javax.swing.JLabel CANTIDAD2;
     private javax.swing.JLabel COMPRA;
-    private javax.swing.JLabel COMPRA1;
-    private javax.swing.JLabel ID;
-    private javax.swing.JLabel ID1;
+    private javax.swing.JLabel COMPRA2;
     private javax.swing.JLabel NOMBRE;
-    private javax.swing.JLabel NOMBRE1;
+    private javax.swing.JLabel NOMBRE2;
     private javax.swing.JLabel VENTA;
-    private javax.swing.JLabel VENTA1;
+    private javax.swing.JLabel VENTA2;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregarP;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificarP;
+    private javax.swing.JComboBox<String> cmbRole;
+    private javax.swing.JComboBox<String> cmbRoleM;
     private javax.swing.JFrame frmCrearPP;
     private javax.swing.JFrame frmModificarPP;
     private javax.swing.JButton jButton1;
@@ -841,16 +766,12 @@ public class viewProducto extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblProductos;
-    private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtCantidadM;
-    private javax.swing.JTextField txtCompra;
-    private javax.swing.JTextField txtCompraM;
-    private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtIDM;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombreM;
-    private javax.swing.JTextField txtVenta;
-    private javax.swing.JTextField txtVentaM;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtPasswordM;
+    private javax.swing.JTextField txtUsername;
+    private javax.swing.JTextField txtUsernameM;
     // End of variables declaration//GEN-END:variables
 
 }

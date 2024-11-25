@@ -4,9 +4,12 @@
  */
 package vista;
 
+import controlador.controladorLogin;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelo.Usuario;
 
 /**
  *
@@ -14,12 +17,37 @@ import java.util.logging.Logger;
  */
 public class viewMenu2 extends javax.swing.JFrame {
 
+    private controladorLogin controladorLogin;
+    private Usuario usuarioActivo;
+
     /**
      * Creates new form viewMenu2
      */
-    public viewMenu2() {
+    public viewMenu2() throws IOException {
+        controladorLogin = new controladorLogin();
         initComponents();
+        cargarDatosUsuario();
     }
+    
+    private void cargarDatosUsuario() {
+        usuarioActivo = controladorLogin.getUsuarioActivo();
+
+        if (usuarioActivo == null) {
+            JOptionPane.showMessageDialog(this, "No hay un usuario activo. Por favor, inicie sesión.", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose(); // Cerrar la ventana si no hay usuario activo
+            return;
+        }
+
+        String role = usuarioActivo.getRole().toUpperCase();
+        System.out.println(role);
+
+        if (usuarioActivo.getRole().toUpperCase().equals("ADMINISTRADOR")) {
+            mnUsuarios.setEnabled(true);
+        }
+
+        System.out.println("Usuario activo: " + usuarioActivo.getNombre());
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,6 +69,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        mnUsuarios = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -119,6 +148,11 @@ public class viewMenu2 extends javax.swing.JFrame {
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ususario.png"))); // NOI18N
         jMenu2.setText("Usuario");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
 
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cerrar.png"))); // NOI18N
         jMenuItem2.setText("Cerrar Usuario");
@@ -128,6 +162,16 @@ public class viewMenu2 extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+
+        mnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ususario.png"))); // NOI18N
+        mnUsuarios.setText("Usuarios");
+        mnUsuarios.setEnabled(false);
+        mnUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnUsuariosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnUsuarios);
 
         jMenuBar1.add(jMenu2);
 
@@ -205,69 +249,86 @@ public class viewMenu2 extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        viewProveedor a = new viewProveedor(); 
+        viewProveedor a = new viewProveedor();
         a.setVisible(rootPaneCheckingEnabled);
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
         viewFacturacion b;
-        
+
         try {
             b = new viewFacturacion();
-            b.setVisible(rootPaneCheckingEnabled); 
+            b.setVisible(rootPaneCheckingEnabled);
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
-        viewSettingsEmpresa c; 
+        viewSettingsEmpresa c = null;
         try {
             c = new viewSettingsEmpresa();
-            c.setVisible(rootPaneCheckingEnabled);
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        dispose(); 
+        c.setVisible(rootPaneCheckingEnabled);
+        dispose();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-        viewReportes d; 
+        viewReportes d;
         try {
             d = new viewReportes();
             d.setVisible(rootPaneCheckingEnabled);
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-       dispose(); 
+        dispose();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-        viewProducto s; 
+        viewProducto s;
         try {
             s = new viewProducto();
             s.setVisible(rootPaneCheckingEnabled);
         } catch (IOException ex) {
             Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        dispose(); 
+
+        dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void mnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuariosActionPerformed
+        // TODO add your handling code here:
+          viewUsuario u;
+        try {
+            u = new viewUsuario();
+            u.setVisible(rootPaneCheckingEnabled);
+        } catch (IOException ex) {
+            Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        dispose();
+    }//GEN-LAST:event_mnUsuariosActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,7 +360,11 @@ public class viewMenu2 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new viewMenu2().setVisible(true);
+                try {
+                    new viewMenu2().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -322,5 +387,6 @@ public class viewMenu2 extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private java.awt.Label label1;
+    private javax.swing.JMenuItem mnUsuarios;
     // End of variables declaration//GEN-END:variables
 }

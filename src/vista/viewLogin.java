@@ -7,6 +7,8 @@ package vista;
 import controlador.controladorLogin;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 
@@ -185,12 +187,19 @@ public class viewLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());
+        viewMenu2 menu;
 
         Usuario usuario = controladorLogin.autenticar(username, password);
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
+            controladorLogin.setUsuarioActivo(usuario);
             // Aqui iria la opcion siguiente al login
-
+            try {
+                menu = new viewMenu2();
+                menu.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
             dispose(); // Cierra la ventana de login
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales Invalidas...");
@@ -202,13 +211,20 @@ public class viewLogin extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String username = txtUsername.getText();
             String password = new String(txtPassword.getPassword());
+            viewMenu2 menu;
 
             Usuario usuario = controladorLogin.autenticar(username, password);
             if (usuario != null) {
-                JOptionPane.showMessageDialog(this, "Welcome " + usuario.getUsername());
+                JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
+                controladorLogin.setUsuarioActivo(usuario);
                 // Redirigir al menú principal
                 //new MenuPrincipal(usuario).setVisible(true);
-
+                try {
+                    menu = new viewMenu2();
+                    menu.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 dispose(); // Cierra la ventana de login
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid username or password");

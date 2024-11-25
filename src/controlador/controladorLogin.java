@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 
 import modelo.Usuario;
@@ -13,6 +9,7 @@ public class controladorLogin {
 
     private ArrayList<Usuario> usuarios;
     private final String archivoUsuarios = "usuarios.txt";
+    private static Usuario usuarioActivo; // Usuario actualmente autenticado
 
     public controladorLogin() throws IOException {
         usuarios = cargarUsuarios();
@@ -33,7 +30,9 @@ public class controladorLogin {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 String[] partes = linea.split(",");
-                usuarios.add(new Usuario(partes[0], partes[1])); // username, password, role
+                if (partes.length == 4) {
+                    usuarios.add(new Usuario(partes[0], partes[1], partes[2], partes[3])); // username, password, nombre, rol
+                }
             }
         }
 
@@ -43,7 +42,7 @@ public class controladorLogin {
     // Crear archivo de usuarios con un usuario admin por defecto
     private void crearArchivoUsuariosPorDefecto() throws IOException {
         ArrayList<String> lineas = new ArrayList<>();
-        lineas.add("admin,admin,admin"); // Usuario admin por defecto
+        lineas.add("admin,admin,Administrador,admin"); // Usuario admin por defecto
         escribirArchivo(lineas);
     }
 
@@ -61,10 +60,80 @@ public class controladorLogin {
     public Usuario autenticar(String username, String password) {
         for (Usuario usuario : usuarios) {
             if (usuario.validarCredenciales(username, password)) {
+                usuarioActivo = usuario;
                 return usuario; // Devuelve el usuario si las credenciales son correctas
             }
         }
         return null; // Si no se encuentra un usuario válido
     }
-}
 
+    // Obtener el usuario actualmente activo
+    public static Usuario getUsuarioActivo() {
+        return usuarioActivo;
+    }
+
+    // Método para configurar el usuario activo
+    public static void setUsuarioActivo(Usuario usuario) {
+        usuarioActivo = usuario;
+    }
+
+    // Agregar un nuevo usuario
+    public void agregarUsuario(String username, String password, String nombre, String rol) throws IOException {
+        if (buscarUsuario(username) != null) {
+            throw new IllegalArgumentException("El usuario ya existe.");
+        }
+
+        Usuario nuevoUsuario = new Usuario(username, password, nombre, rol);
+        usuarios.add(nuevoUsuario);
+        guardarUsuarios();
+    }
+
+    // Listar todos los usuarios
+    public ArrayList<Usuario> listarUsuarios() {
+        return usuarios;
+    }
+
+    // Modificar un usuario existente
+    public void modificarUsuario(String username, Usuario usuarioModificado) throws IOException {
+        Usuario usuario = buscarUsuario(username);
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario no existe.");
+        }
+
+        // Actualizar los datos del usuario
+        usuario.setPassword(usuarioModificado.getPassword());
+        usuario.setNombre(usuarioModificado.getNombre());
+        usuario.setRole(usuarioModificado.getRole());
+
+        guardarUsuarios(); // Guardar los cambios en el archivo
+    }
+
+    // Eliminar un usuario
+    public void eliminarUsuario(String username) throws IOException {
+        Usuario usuario = buscarUsuario(username);
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario no existe.");
+        }
+
+        usuarios.remove(usuario);
+        guardarUsuarios(); // Guardar los cambios en el archivo
+    }
+
+    // Buscar un usuario por username
+    private Usuario buscarUsuario(String username) {
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUsername().equals(username)) {
+                return usuario;
+            }
+        }
+        return null;
+    }
+    
+    private void guardarUsuarios() throws IOException {
+    ArrayList<String> lineas = new ArrayList<>();
+    for (Usuario usuario : usuarios) {
+        lineas.add(usuario.getUsername() + "," + usuario.getPassword() + "," + usuario.getNombre() + "," + usuario.getRole());
+    }
+    escribirArchivo(lineas);
+}
+}

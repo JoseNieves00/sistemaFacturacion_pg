@@ -36,6 +36,21 @@ public class viewFacturacion extends javax.swing.JFrame {
         tblFactura = new JTable(modeloTabla);
         limpiarTabla();
         frmFinalizar.setVisible(false);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                // Abrir el menú principal antes de cerrar
+                viewMenu2 m;
+                try {
+                    m = new viewMenu2();
+                    m.setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                dispose(); // Cerrar esta ventana
+            }
+        });
     }
 
     private void limpiarCampos() {
@@ -264,6 +279,11 @@ public class viewFacturacion extends javax.swing.JFrame {
         });
 
         cmbPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un metodo de pago", "Efectivo", "Tarjeta de Debito", "Tarjeta de Credito", "Otro", " " }));
+        cmbPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPagoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -618,7 +638,7 @@ public class viewFacturacion extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -840,10 +860,19 @@ public class viewFacturacion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        viewMenu2 m = new viewMenu2();
-        m.setVisible(rootPaneCheckingEnabled);
+        viewMenu2 m;
+        try {
+                m = new viewMenu2();
+                m.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmbPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPagoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPagoActionPerformed
 
     /**
      * @param args the command line arguments

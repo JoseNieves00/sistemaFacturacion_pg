@@ -4,6 +4,9 @@
  */
 package modelo;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vista.viewMenu2;
 
 /**
@@ -12,8 +15,13 @@ import vista.viewMenu2;
  */
 public class Menu {
     public static void main(String[] args){
-        viewMenu2 menu= new viewMenu2(); 
-        menu.setVisible(true);
+        viewMenu2 m;
+        try {
+            m = new viewMenu2();
+            m.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
     
 }

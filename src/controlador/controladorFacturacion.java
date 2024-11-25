@@ -9,6 +9,7 @@ import modelo.Empresa;
 import modelo.Factura;
 import modelo.ItemFactura;
 import modelo.Producto;
+import modelo.Usuario;
 
 public class controladorFacturacion {
 
@@ -17,10 +18,13 @@ public class controladorFacturacion {
     private controladorProductos controladorProductos;
     private controladorEmpresa controladorEmpresa;
     private int contadorFacturas;
+    private controladorLogin controladorLogin;
+    private Usuario usuarioActivo;
 
     public controladorFacturacion() throws IOException {
         controladorProductos = new controladorProductos();
         controladorEmpresa = new controladorEmpresa();
+        controladorLogin = new controladorLogin();
 
         // Crear carpeta de facturas si no existe
         File carpeta = new File(carpetaFacturas);
@@ -111,6 +115,7 @@ public class controladorFacturacion {
     // Guardar una factura en un archivo
     private void guardarFacturaEnArchivo(Factura factura, Empresa empresa) throws IOException {
         String archivoFactura = carpetaFacturas + factura.getNumeroFactura() + ".txt";
+        Usuario usuarioActivo = controladorLogin.getUsuarioActivo();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoFactura))) {
             writer.write(empresa.getNombre());
@@ -121,6 +126,8 @@ public class controladorFacturacion {
             writer.newLine();
             writer.write("Telefono " + empresa.getTelefono());
             writer.newLine();
+            writer.newLine();
+            writer.write("Vendedor: " + usuarioActivo.getNombre());
             writer.newLine();
             writer.write("Factura: " + factura.getNumeroFactura());
             writer.newLine();
