@@ -6,7 +6,6 @@ package vista;
 
 import controlador.controladorEmpresa;
 import controlador.controladorLogin;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -125,6 +124,7 @@ public class viewSettingsEmpresa extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Datos de la Empresa");
         setSize(new java.awt.Dimension(829, 398));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));

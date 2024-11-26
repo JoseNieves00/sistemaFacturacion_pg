@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import controlador.controladorProveedor;
@@ -581,7 +577,7 @@ public class viewProveedor extends javax.swing.JFrame {
         try {
             controladorProveedor.modificarProveedor(nit, proveedorModificado);
             cargarTablaProveedores(); // Actualizar la tabla con los cambios
-            limpiarFormulario(); // Limpiar los campos
+            limpiarFormulario();
             JOptionPane.showMessageDialog(this, "Proveedor modificado exitosamente.");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al modificar el proveedor: " + e.getMessage());

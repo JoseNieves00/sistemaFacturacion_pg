@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import controlador.controladorLogin;
@@ -28,7 +24,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         initComponents();
         cargarDatosUsuario();
     }
-    
+
     private void cargarDatosUsuario() {
         usuarioActivo = controladorLogin.getUsuarioActivo();
 
@@ -47,7 +43,6 @@ public class viewMenu2 extends javax.swing.JFrame {
 
         System.out.println("Usuario activo: " + usuarioActivo.getNombre());
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,6 +70,7 @@ public class viewMenu2 extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu");
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
@@ -235,6 +231,9 @@ public class viewMenu2 extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+        viewLogin l;
+        l = new viewLogin();
+        l.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -295,7 +294,7 @@ public class viewMenu2 extends javax.swing.JFrame {
 
     private void mnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuariosActionPerformed
         // TODO add your handling code here:
-          viewUsuario u;
+        viewUsuario u;
         try {
             u = new viewUsuario();
             u.setVisible(rootPaneCheckingEnabled);

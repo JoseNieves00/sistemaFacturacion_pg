@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import controlador.controladorLogin;
@@ -50,6 +46,7 @@ public class viewLogin extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
         setBackground(new java.awt.Color(0, 204, 255));
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
@@ -193,7 +190,7 @@ public class viewLogin extends javax.swing.JFrame {
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
             controladorLogin.setUsuarioActivo(usuario);
-            // Aqui iria la opcion siguiente al login
+            // redirigir al menu principal
             try {
                 menu = new viewMenu2();
                 menu.setVisible(true);
@@ -218,7 +215,6 @@ public class viewLogin extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
                 controladorLogin.setUsuarioActivo(usuario);
                 // Redirigir al menú principal
-                //new MenuPrincipal(usuario).setVisible(true);
                 try {
                     menu = new viewMenu2();
                     menu.setVisible(true);

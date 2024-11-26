@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import controlador.controladorLogin;
 import java.awt.BorderLayout;
-import modelo.Producto;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -424,12 +418,13 @@ public class viewUsuario extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gesion de Usuarios");
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("GESTION USUARIOS - SISTEMA DE FACTURACION  E INVENTARIO");
+        jLabel1.setText("GESTION DE USUARIOS - SISTEMA DE FACTURACION  E INVENTARIO");
         jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.gray, null));
 
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(

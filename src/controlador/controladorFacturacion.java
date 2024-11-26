@@ -19,7 +19,6 @@ public class controladorFacturacion {
     private controladorEmpresa controladorEmpresa;
     private int contadorFacturas;
     private controladorLogin controladorLogin;
-    private Usuario usuarioActivo;
 
     public controladorFacturacion() throws IOException {
         controladorProductos = new controladorProductos();
@@ -73,9 +72,7 @@ public class controladorFacturacion {
         factura.setRecibido(recibido);
         factura.setMetodoPago(metodoPago);
 
-        Empresa empresa = new Empresa();
-
-        empresa = controladorEmpresa.getEmpresa();
+        Empresa empresa = controladorEmpresa.getEmpresa();
 
         for (ItemFactura item : items) {
             Producto producto = controladorProductos.buscarProducto(item.getCodigo());
@@ -105,7 +102,7 @@ public class controladorFacturacion {
 
         // Guardar factura y actualizar el contador
         controladorProductos.guardarProductos(); // Actualizar inventario
-        guardarFacturaEnArchivo(factura, empresa);        // Guardar la factura en el archivo
+        guardarFacturaEnArchivo(factura, empresa); // Guardar la factura en el archivo
         contadorFacturas++;
         guardarContadorFacturas();
 
@@ -117,6 +114,11 @@ public class controladorFacturacion {
         String archivoFactura = carpetaFacturas + factura.getNumeroFactura() + ".txt";
         Usuario usuarioActivo = controladorLogin.getUsuarioActivo();
 
+        if (usuarioActivo == null) {
+            JOptionPane.showMessageDialog(null, "No se pudo identificar al usuario activo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoFactura))) {
             writer.write(empresa.getNombre());
             writer.newLine();
@@ -127,7 +129,7 @@ public class controladorFacturacion {
             writer.write("Telefono " + empresa.getTelefono());
             writer.newLine();
             writer.newLine();
-            writer.write("Vendedor: " + usuarioActivo.getNombre());
+            writer.write("Vendedor: " + usuarioActivo.getNombre().toUpperCase());
             writer.newLine();
             writer.write("Factura: " + factura.getNumeroFactura());
             writer.newLine();
