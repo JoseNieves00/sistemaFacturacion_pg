@@ -35,7 +35,8 @@ public class controladorInventario {
                             data[0], data[1],
                             Double.parseDouble(data[2]),
                             Double.parseDouble(data[3]),
-                            Integer.parseInt(data[4])
+                            Integer.parseInt(data[4]),
+                            data[5]
                     );
                     lista.add(p);
                 }

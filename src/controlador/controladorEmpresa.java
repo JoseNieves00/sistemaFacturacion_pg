@@ -11,7 +11,7 @@ public class controladorEmpresa {
     public controladorEmpresa() throws IOException {
         empresa = cargarDatosEmpresa();
         if (empresa == null) { // Validación de seguridad
-            empresa = new Empresa("Nombre Empresa", "Dirección Predeterminada", "000-000-0000", "12345678");
+            empresa = new Empresa("Nombre Empresa", "Dirección Predeterminada", "000-000-0000", "12345678",false);
         }
     }
 
@@ -21,7 +21,7 @@ private Empresa cargarDatosEmpresa() throws IOException {
 
     if (!archivo.exists()) {
         Empresa empresaPredeterminada = new Empresa(
-            "Nombre Empresa", "Dirección Predeterminada", "000-000-0000", "12345678"
+            "Nombre Empresa", "Dirección Predeterminada", "000-000-0000", "12345678",false
         );
         guardarDatosEmpresa(empresaPredeterminada);
         return empresaPredeterminada;
@@ -32,10 +32,10 @@ private Empresa cargarDatosEmpresa() throws IOException {
         if (linea != null) {
             if (!linea.isEmpty()) {
                     String[] partes = linea.split(",");
-                    if (partes.length == 4) {
+                    if (partes.length == 5) {
                         return new Empresa(
                                 partes[0], partes[1],
-                                partes[2],partes[3]
+                                partes[2],partes[3], Boolean.parseBoolean(partes[4])
                         );
                     }
                 }
@@ -45,7 +45,7 @@ private Empresa cargarDatosEmpresa() throws IOException {
     }
 
     // Si algo falla, devuelve un objeto predeterminado
-    return new Empresa("Nombre Empresa", "Dirección Predeterminada", "000-000-0000", "12345678");
+    return new Empresa("Nombre Empresa", "Dirección Predeterminada", "000-000-0000", "12345678",false);
 }
 
     // Guardar los datos de la empresa en el archivo
@@ -61,11 +61,12 @@ private Empresa cargarDatosEmpresa() throws IOException {
     }
 
     // Actualizar los datos de la empresa
-    public void actualizarDatosEmpresa(String nombre, String direccion, String telefono, String nit) throws IOException {
+    public void actualizarDatosEmpresa(String nombre, String direccion, String telefono, String nit,Boolean isEdited) throws IOException {
         empresa.setNombre(nombre);
         empresa.setDireccion(direccion);
         empresa.setTelefono(telefono);
         empresa.setNit(nit);
+        empresa.setIsEdited(isEdited);
         guardarDatosEmpresa(empresa);
     }
 }

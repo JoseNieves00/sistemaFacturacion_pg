@@ -89,4 +89,14 @@ public class controladorProveedor {
     public ArrayList<Proveedor> listarProveedores() {
         return proveedores;
     }
+    
+    public ArrayList<String> obtenerProveedores() {
+    ArrayList<String> nombresProveedores = new ArrayList<>();
+    for (Proveedor proveedor : proveedores) {
+        System.out.println(proveedor.getNombre());
+        nombresProveedores.add(proveedor.getNombre());
+    }
+    return nombresProveedores;
+}
+
 }

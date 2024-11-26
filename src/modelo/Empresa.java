@@ -5,12 +5,22 @@ public class Empresa{
     private String direccion;
     private String telefono;
     private String nit;
+    private Boolean isEdited;
 
-    public Empresa(String nombre, String direccion, String telefono, String nit) {
+    public Empresa(String nombre, String direccion, String telefono, String nit,Boolean isEdited) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
         this.nit = nit;
+        this.isEdited = isEdited;
+    }
+
+    public Boolean getIsEdited() {
+        return isEdited;
+    }
+
+    public void setIsEdited(Boolean isEdited) {
+        this.isEdited = isEdited;
     }
 
     public Empresa() {
@@ -50,7 +60,7 @@ public class Empresa{
     
      @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s", nombre, direccion, telefono, nit);
+        return String.format("%s,%s,%s,%s,%b", nombre, direccion, telefono, nit,isEdited);
     }
 
 }

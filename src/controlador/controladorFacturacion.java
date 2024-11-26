@@ -138,11 +138,11 @@ public class controladorFacturacion {
             writer.newLine();
             writer.write("---------------------------------------------------");
             writer.newLine();
-            writer.write("\nCódigo\tNombre  \tCantidad  \tPrecio  \tSubtotal");
+            writer.write("\nCódigo\tNombre  \t\tCantidad  \tPrecio  \tSubtotal");
             writer.newLine();
 
             for (ItemFactura item : factura.getItems()) {
-                writer.write(String.format("%s \t%s \t%d   \t\t$%.2f  \t$%.2f",
+                writer.write(String.format("%s \t%s \t%d   \t\t$%.0f  \t$%.0f",
                         item.getCodigo(),
                         item.getNombre(),
                         item.getCantidad(),

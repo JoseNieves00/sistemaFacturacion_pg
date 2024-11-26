@@ -7,16 +7,27 @@ public class Producto extends Item{
     private double precioCompra;
     private double precioVenta;
     private int cantidad;
+    private String proveedor;
 
     public Producto() {
     }
 
-    public Producto( String codigo, String nombre, double precioCompra, double precioVenta, int cantidad) {
+    public Producto( String codigo, String nombre, double precioCompra, double precioVenta, int cantidad,String proveedor) {
         super(codigo, nombre);
         this.precioCompra = precioCompra;
         this.precioVenta = precioVenta;
         this.cantidad = cantidad;
+        this.proveedor = proveedor;
     }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+    
 
     public double getPrecioCompra() {
         return precioCompra;
@@ -56,7 +67,7 @@ public class Producto extends Item{
 
     @Override
     public String toString() {
-        return getCodigo() + "," + getNombre() + "," + precioCompra + "," + precioVenta + "," + getCantidad();
+        return getCodigo() + "," + getNombre() + "," + precioCompra + "," + precioVenta + "," + getCantidad() + "," + getProveedor();
     }
     
     

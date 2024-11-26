@@ -1,6 +1,7 @@
 package vista;
 
 import controlador.controladorProductos;
+import controlador.controladorProveedor;
 import java.awt.BorderLayout;
 import modelo.Producto;
 import java.io.IOException;
@@ -19,13 +20,17 @@ import javax.swing.table.DefaultTableModel;
 public class viewProducto extends javax.swing.JFrame {
 
     private controladorProductos controlador;
+    private controladorProveedor controladorProveedor;
     private DefaultTableModel modelo;
+
     private int fila;
 
     public viewProducto() throws IOException {
         initComponents();
         try {
             controlador = new controladorProductos();
+            controladorProveedor = new controladorProveedor();
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar los proveedores: " + e.getMessage());
             return;
@@ -37,6 +42,7 @@ public class viewProducto extends javax.swing.JFrame {
         add(new JScrollPane(tblProductos), BorderLayout.CENTER);
         btnModificar.setEnabled(false);
         btnEliminar.setEnabled(false);
+        cargarProveedores();
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -54,15 +60,29 @@ public class viewProducto extends javax.swing.JFrame {
         });
     }
 
+    private void cargarProveedores() {
+        try {
+            ArrayList<String> proveedores = controladorProveedor.obtenerProveedores();
+            COMBOBOXP.removeAllItems(); // Limpiar elementos previos
+            COMBOBOXPM.removeAllItems();
+            for (String proveedor : proveedores) {
+                System.out.println(proveedor);
+                COMBOBOXP.addItem(proveedor);
+                COMBOBOXPM.addItem(proveedor);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar proveedores: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void actualizarTabla() {
         limpiarTabla();
         ArrayList<Producto> productos = controlador.listarProductos();
         if (productos != null && !productos.isEmpty()) {
             for (Producto producto : productos) {
-                modelo.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getPrecioCompra(), producto.getPrecioVenta(), producto.getCantidad()});
+                modelo.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getPrecioCompra(), producto.getPrecioVenta(), producto.getCantidad(),producto.getProveedor()
+                });
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontraron productos.");
         }
         tblProductos.setModel(modelo);
     }
@@ -84,7 +104,9 @@ public class viewProducto extends javax.swing.JFrame {
     }
 
     private void validarCampos() throws Exception {
-        if (txtID.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtCompra.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty() || txtVenta.getText().trim().isEmpty()) {
+        int indexProveedor = COMBOBOXP.getSelectedIndex();
+        
+        if (txtID.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtCompra.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty() || txtVenta.getText().trim().isEmpty() || COMBOBOXP.getItemAt(indexProveedor).trim().isEmpty()) {
             throw new Exception("Todos los campos deben estar llenos.");
         }
 
@@ -105,7 +127,9 @@ public class viewProducto extends javax.swing.JFrame {
     }
 
     private void validarCamposModificar() throws Exception {
-        if (txtIDM.getText().trim().isEmpty() || txtNombreM.getText().trim().isEmpty() || txtCompraM.getText().trim().isEmpty() || txtVentaM.getText().trim().isEmpty() || txtCantidadM.getText().trim().isEmpty()) {
+        int indexProveedorM = COMBOBOXPM.getSelectedIndex();
+        
+        if (txtIDM.getText().trim().isEmpty() || txtNombreM.getText().trim().isEmpty() || txtCompraM.getText().trim().isEmpty() || txtVentaM.getText().trim().isEmpty() || txtCantidadM.getText().trim().isEmpty() || COMBOBOXPM.getItemAt(indexProveedorM).trim().isEmpty()) {
             throw new Exception("Todos los campos deben estar llenos.");
         }
 
@@ -167,7 +191,7 @@ public class viewProducto extends javax.swing.JFrame {
         txtVentaM = new javax.swing.JTextField();
         CANTIDAD1 = new javax.swing.JLabel();
         txtCantidadM = new javax.swing.JTextField();
-        COMBOBOXP1 = new javax.swing.JComboBox<>();
+        COMBOBOXPM = new javax.swing.JComboBox<>();
         PROVEEDOR1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -250,7 +274,6 @@ public class viewProducto extends javax.swing.JFrame {
         });
 
         COMBOBOXP.setFont(new java.awt.Font("Book Antiqua", 0, 14)); // NOI18N
-        COMBOBOXP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 2", "Item 3", "Item 4" }));
         COMBOBOXP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.lightGray, null, java.awt.Color.darkGray));
         COMBOBOXP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,7 +313,7 @@ public class viewProducto extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                             .addComponent(txtCantidad)
-                            .addComponent(COMBOBOXP, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(COMBOBOXP, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -419,12 +442,11 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
-        COMBOBOXP1.setFont(new java.awt.Font("Book Antiqua", 0, 14)); // NOI18N
-        COMBOBOXP1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 2", "Item 3", "Item 4" }));
-        COMBOBOXP1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.lightGray, null, java.awt.Color.darkGray));
-        COMBOBOXP1.addActionListener(new java.awt.event.ActionListener() {
+        COMBOBOXPM.setFont(new java.awt.Font("Book Antiqua", 0, 14)); // NOI18N
+        COMBOBOXPM.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.lightGray, null, java.awt.Color.darkGray));
+        COMBOBOXPM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                COMBOBOXP1ActionPerformed(evt);
+                COMBOBOXPMActionPerformed(evt);
             }
         });
 
@@ -455,12 +477,11 @@ public class viewProducto extends javax.swing.JFrame {
                                     .addComponent(VENTA1)
                                     .addComponent(PROVEEDOR1))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(COMBOBOXP1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtCompraM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                        .addComponent(txtCantidadM)
-                                        .addComponent(txtVentaM))))))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtCompraM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                    .addComponent(txtCantidadM)
+                                    .addComponent(txtVentaM)
+                                    .addComponent(COMBOBOXPM, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -497,7 +518,7 @@ public class viewProducto extends javax.swing.JFrame {
                     .addComponent(txtCantidadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(COMBOBOXP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(COMBOBOXPM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PROVEEDOR1))
                 .addGap(18, 18, 18)
                 .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -674,7 +695,7 @@ public class viewProducto extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         frmModificarPP.setVisible(true);
-        frmCrearPP.setSize(586, 480);
+        frmCrearPP.setSize(586, 505);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -719,8 +740,11 @@ public class viewProducto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "El Producto ya existe!");
                 return;
             }
+            
+            int indexProveedor = COMBOBOXP.getSelectedIndex();
+            String proveedor = COMBOBOXP.getItemAt(indexProveedor);
 
-            Producto p = new Producto(codigo, txtNombre.getText().trim(), Double.parseDouble(txtCompra.getText()), Double.parseDouble(txtVenta.getText()), Integer.parseInt(txtCantidad.getText()));
+            Producto p = new Producto(codigo, txtNombre.getText().trim(), Double.parseDouble(txtCompra.getText()), Double.parseDouble(txtVenta.getText()), Integer.parseInt(txtCantidad.getText()),proveedor);
             controlador.agregarProducto(p);
             actualizarTabla();
             limpiarCampos();
@@ -762,15 +786,19 @@ public class viewProducto extends javax.swing.JFrame {
             }
 
             validarCamposModificar();
+            
+            int indexProveedorM = COMBOBOXPM.getSelectedIndex();
+            String proveedorM = COMBOBOXPM.getItemAt(indexProveedorM);
+
 
             String codigo = (String) modelo.getValueAt(fila, 0);
-            Producto producto = new Producto(txtIDM.getText().trim(), txtNombreM.getText().trim(), Double.parseDouble(txtCompraM.getText()), Double.parseDouble(txtVentaM.getText()), Integer.parseInt(txtCantidadM.getText()));
+            Producto producto = new Producto(txtIDM.getText().trim(), txtNombreM.getText().trim(), Double.parseDouble(txtCompraM.getText()), Double.parseDouble(txtVentaM.getText()), Integer.parseInt(txtCantidadM.getText()),proveedorM);
             controlador.modificarProducto(codigo, producto);
             actualizarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(this, "Producto modificado con éxito");
             btnModificar.setEnabled(false);
-        btnEliminar.setEnabled(false);
+            btnEliminar.setEnabled(false);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -800,7 +828,7 @@ public class viewProducto extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-          viewMenu2 m;
+        viewMenu2 m;
         try {
             m = new viewMenu2();
             m.setVisible(rootPaneCheckingEnabled);
@@ -814,9 +842,9 @@ public class viewProducto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_COMBOBOXPActionPerformed
 
-    private void COMBOBOXP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMBOBOXP1ActionPerformed
+    private void COMBOBOXPMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMBOBOXPMActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_COMBOBOXP1ActionPerformed
+    }//GEN-LAST:event_COMBOBOXPMActionPerformed
 
     /**
      * @param args the command line arguments
@@ -861,7 +889,7 @@ public class viewProducto extends javax.swing.JFrame {
     private javax.swing.JLabel CANTIDAD;
     private javax.swing.JLabel CANTIDAD1;
     private javax.swing.JComboBox<String> COMBOBOXP;
-    private javax.swing.JComboBox<String> COMBOBOXP1;
+    private javax.swing.JComboBox<String> COMBOBOXPM;
     private javax.swing.JLabel COMPRA;
     private javax.swing.JLabel COMPRA1;
     private javax.swing.JLabel ID;

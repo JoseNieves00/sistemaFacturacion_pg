@@ -1,30 +1,59 @@
 package vista;
 
+import controlador.controladorEmpresa;
 import controlador.controladorLogin;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Empresa;
 import modelo.Usuario;
 
 public class viewLogin extends javax.swing.JFrame {
 
     private controladorLogin controladorLogin;
+    private controladorEmpresa controladorEmpresa;
+    private Empresa empresa;
 
     /**
      * Creates new form VentanaLogin
      */
-    public viewLogin() {
+    public viewLogin() throws IOException {
         //creacion de instacia del controlador Login
         try {
             controladorLogin = new controladorLogin();
+            controladorEmpresa = new controladorEmpresa();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error loading users: " + e.getMessage());
             return;
         }
-
         initComponents();
+    }
+
+    private void verificarEdicionEmpresa() throws IOException {
+        Empresa empresa = controladorEmpresa.getEmpresa();
+
+        if (!empresa.getIsEdited()) {
+            JOptionPane.showMessageDialog(null, "Ingresa los datos de tu empresa!", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            viewSettingsEmpresa c = null;
+            try {
+                c = new viewSettingsEmpresa();
+                c.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(viewMenu2.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            viewMenu2 menu;
+            try {
+                menu = new viewMenu2();
+                menu.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            dispose();
+        }
     }
 
     /**
@@ -184,20 +213,18 @@ public class viewLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());
-        viewMenu2 menu;
 
         Usuario usuario = controladorLogin.autenticar(username, password);
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
             controladorLogin.setUsuarioActivo(usuario);
-            // redirigir al menu principal
-            try {
-                menu = new viewMenu2();
-                menu.setVisible(true);
-            } catch (IOException ex) {
-                Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            dispose(); // Cierra la ventana de login
+                try {
+                    // Verificar edicion de datos de la empresa
+                    verificarEdicionEmpresa();
+                } catch (IOException ex) {
+                    Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales Invalidas...");
         }
@@ -208,20 +235,17 @@ public class viewLogin extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String username = txtUsername.getText();
             String password = new String(txtPassword.getPassword());
-            viewMenu2 menu;
 
             Usuario usuario = controladorLogin.autenticar(username, password);
             if (usuario != null) {
                 JOptionPane.showMessageDialog(this, "Bienvenido! " + usuario.getUsername());
                 controladorLogin.setUsuarioActivo(usuario);
-                // Redirigir al menú principal
                 try {
-                    menu = new viewMenu2();
-                    menu.setVisible(true);
+                    // Verificar edicion de datos de la empresa
+                    verificarEdicionEmpresa();
                 } catch (IOException ex) {
                     Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                dispose(); // Cierra la ventana de login
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid username or password");
             }
@@ -259,7 +283,11 @@ public class viewLogin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new viewLogin().setVisible(true);
+                try {
+                    new viewLogin().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

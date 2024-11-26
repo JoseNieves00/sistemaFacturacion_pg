@@ -91,7 +91,8 @@ public class viewSettingsEmpresa extends javax.swing.JFrame {
                     txtNombre.getText().trim(),
                     txtDireccion.getText().trim(),
                     txtTelefono.getText().trim(),
-                    txtNit.getText().trim()
+                    txtNit.getText().trim(),
+                    true
             );
 
             JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");

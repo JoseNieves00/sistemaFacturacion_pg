@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 
 import java.io.*;
@@ -46,11 +42,11 @@ public class controladorProductos {
 
                 if (!linea.isEmpty()) {
                     String[] partes = linea.split(",");
-                    if (partes.length == 5) {
+                    if (partes.length == 6) {
                         Producto producto = new Producto(
                                 partes[0], partes[1],
                                 Double.parseDouble(partes[2]), Double.parseDouble(partes[3]),
-                                Integer.parseInt(partes[4])
+                                Integer.parseInt(partes[4]),partes[5]
                         );
                         lista.add(producto);
                     }
@@ -64,7 +60,7 @@ public class controladorProductos {
     // Agregar un proveedor y guardar en el archivo
     public void agregarProducto(Producto producto) throws IOException {
         productos.add(producto);
-        guardarProducto();
+        guardarProductos();
     }
 
     // Guardar todos los proveedores en el archivo

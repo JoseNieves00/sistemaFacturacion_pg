@@ -65,11 +65,7 @@ public class viewProveedor extends javax.swing.JFrame {
             for (Proveedor proveedor : proveedores) {
                 modeloTabla.addRow(new Object[]{proveedor.getNombre(), proveedor.getNit(), proveedor.getContacto()});
             }
-        } else {
-            // Si la lista está vacía, puedes mostrar un mensaje
-            JOptionPane.showMessageDialog(this, "No se encontraron proveedores.");
         }
-
         tblProveedores.setModel(modeloTabla);
     }
 
