@@ -411,6 +411,7 @@ public class viewFacturacion extends javax.swing.JFrame {
         txtNombre.setEditable(false);
         txtNombre.setBackground(new java.awt.Color(204, 204, 204));
         txtNombre.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtNombre.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtNombre.setEnabled(false);
         txtNombre.setFocusable(false);
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -431,6 +432,7 @@ public class viewFacturacion extends javax.swing.JFrame {
         txtStock.setEditable(false);
         txtStock.setBackground(new java.awt.Color(204, 204, 204));
         txtStock.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtStock.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtStock.setEnabled(false);
         txtStock.setFocusable(false);
 
@@ -634,7 +636,7 @@ public class viewFacturacion extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
