@@ -151,6 +151,8 @@ public class viewProducto extends javax.swing.JFrame {
         txtCantidad = new javax.swing.JTextField();
         CANTIDAD = new javax.swing.JLabel();
         txtVenta = new javax.swing.JTextField();
+        COMBOBOXP = new javax.swing.JComboBox<>();
+        PROVEEDOR = new javax.swing.JLabel();
         frmModificarPP = new javax.swing.JFrame();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -165,6 +167,8 @@ public class viewProducto extends javax.swing.JFrame {
         txtVentaM = new javax.swing.JTextField();
         CANTIDAD1 = new javax.swing.JLabel();
         txtCantidadM = new javax.swing.JTextField();
+        COMBOBOXP1 = new javax.swing.JComboBox<>();
+        PROVEEDOR1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -245,14 +249,22 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
+        COMBOBOXP.setFont(new java.awt.Font("Book Antiqua", 0, 14)); // NOI18N
+        COMBOBOXP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 2", "Item 3", "Item 4" }));
+        COMBOBOXP.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.lightGray, null, java.awt.Color.darkGray));
+        COMBOBOXP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                COMBOBOXPActionPerformed(evt);
+            }
+        });
+
+        PROVEEDOR.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        PROVEEDOR.setText("PROVEEDOR");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(134, 134, 134))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,18 +278,24 @@ public class viewProducto extends javax.swing.JFrame {
                             .addComponent(txtID)))
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(COMPRA)
+                        .addGap(15, 15, 15)
+                        .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(VENTA)
-                            .addComponent(CANTIDAD))
+                            .addComponent(CANTIDAD)
+                            .addComponent(PROVEEDOR))
                         .addGap(35, 35, 35)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                            .addComponent(txtCantidad)))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(COMPRA)
-                        .addGap(15, 15, 15)
-                        .addComponent(txtCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtCantidad)
+                            .addComponent(COMBOBOXP, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(172, 172, 172))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,9 +322,13 @@ public class viewProducto extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CANTIDAD)
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(64, 64, 64)
-                .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(COMBOBOXP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PROVEEDOR))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(btnAgregarP, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout frmCrearPPLayout = new javax.swing.GroupLayout(frmCrearPP.getContentPane());
@@ -397,14 +419,22 @@ public class viewProducto extends javax.swing.JFrame {
             }
         });
 
+        COMBOBOXP1.setFont(new java.awt.Font("Book Antiqua", 0, 14)); // NOI18N
+        COMBOBOXP1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 2", "Item 3", "Item 4" }));
+        COMBOBOXP1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.gray, java.awt.Color.lightGray, null, java.awt.Color.darkGray));
+        COMBOBOXP1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                COMBOBOXP1ActionPerformed(evt);
+            }
+        });
+
+        PROVEEDOR1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        PROVEEDOR1.setText("PROVEEDOR");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(134, 134, 134))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -422,16 +452,23 @@ public class viewProducto extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(COMPRA1)
                                     .addComponent(CANTIDAD1)
-                                    .addComponent(VENTA1))
+                                    .addComponent(VENTA1)
+                                    .addComponent(PROVEEDOR1))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCompraM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                                    .addComponent(txtCantidadM)
-                                    .addComponent(txtVentaM)))))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(COMBOBOXP1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtCompraM, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                        .addComponent(txtCantidadM)
+                                        .addComponent(txtVentaM))))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(167, 167, 167))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,9 +495,13 @@ public class viewProducto extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CANTIDAD1)
                     .addComponent(txtCantidadM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(COMBOBOXP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PROVEEDOR1))
+                .addGap(18, 18, 18)
+                .addComponent(btnModificarP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout frmModificarPPLayout = new javax.swing.GroupLayout(frmModificarPP.getContentPane());
@@ -495,11 +536,11 @@ public class viewProducto extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "NOMBRE", "PRECIO COMPRA", "PRECIO VENTA", "CANTIDAD"
+                "ID", "NOMBRE", "PRECIO COMPRA", "PRECIO VENTA", "CANTIDAD", "PROVEEDOR"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -769,6 +810,14 @@ public class viewProducto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void COMBOBOXPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMBOBOXPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_COMBOBOXPActionPerformed
+
+    private void COMBOBOXP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_COMBOBOXP1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_COMBOBOXP1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -811,12 +860,16 @@ public class viewProducto extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CANTIDAD;
     private javax.swing.JLabel CANTIDAD1;
+    private javax.swing.JComboBox<String> COMBOBOXP;
+    private javax.swing.JComboBox<String> COMBOBOXP1;
     private javax.swing.JLabel COMPRA;
     private javax.swing.JLabel COMPRA1;
     private javax.swing.JLabel ID;
     private javax.swing.JLabel ID1;
     private javax.swing.JLabel NOMBRE;
     private javax.swing.JLabel NOMBRE1;
+    private javax.swing.JLabel PROVEEDOR;
+    private javax.swing.JLabel PROVEEDOR1;
     private javax.swing.JLabel VENTA;
     private javax.swing.JLabel VENTA1;
     private javax.swing.JButton btnAgregar;
