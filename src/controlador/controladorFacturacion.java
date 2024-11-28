@@ -136,13 +136,13 @@ public class controladorFacturacion {
             writer.write("Fecha: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(factura.getFecha()));
             writer.newLine();
             writer.newLine();
-            writer.write("---------------------------------------------------");
+            writer.write("----------------------------------------------------------------------------------------------------");
             writer.newLine();
-            writer.write("\nCódigo\tNombre  \t\tCantidad  \tPrecio  \tSubtotal");
+            writer.write("\nCódigo\t\t Nombre  \t\t\t Cantidad  \t\t\t\tPrecio  \t\tSubtotal");
             writer.newLine();
 
             for (ItemFactura item : factura.getItems()) {
-                writer.write(String.format("%s \t%s \t%d   \t\t$%.0f  \t$%.0f",
+                writer.write(String.format("%s \t\t" +"|"+ "\t%s\t\t" +"|"+ "\t\t%d\t\t" +"|"+ "\t$%.0f\t\t" +"|"+ "\t$%.0f\t",
                         item.getCodigo(),
                         item.getNombre(),
                         item.getCantidad(),
@@ -151,7 +151,7 @@ public class controladorFacturacion {
                 writer.newLine();
             }
 
-            writer.write("\n---------------------------------------------------");
+            writer.write("\n-------------------------------------------------------------------------------------------------");
             writer.newLine();
             writer.write("\nSubtotal: $" + factura.getSubtotal());
             writer.newLine();
@@ -163,7 +163,7 @@ public class controladorFacturacion {
             writer.newLine();
             writer.write("Cambio: $" + factura.getCambio());
             writer.newLine();
-            writer.write("\n---------------------------------------------------");
+            writer.write("\n--------------------------------------------------------------------------------------------------");
             writer.newLine();
             writer.write("\nMuchas gracias por su compra!");
 

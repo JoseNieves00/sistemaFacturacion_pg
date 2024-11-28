@@ -88,7 +88,7 @@ public class viewFacturacion extends javax.swing.JFrame {
         txtSubTotal.setText(String.format("$%.0f", subtotal)); // Actualizar el texto de la etiqueta
         txtTotal.setText(String.format("$%.0f", iva)); // Actualizar el texto de la etiqueta
 
-    }    
+    }
 
     private void agregarProductosFactura() {
         // Obtener el código del producto y la cantidad desde los campos de texto
@@ -441,7 +441,9 @@ public class viewFacturacion extends javax.swing.JFrame {
 
         txtSubTotal.setEditable(false);
         txtSubTotal.setBackground(new java.awt.Color(204, 204, 204));
+        txtSubTotal.setForeground(new java.awt.Color(0, 0, 0));
         txtSubTotal.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtSubTotal.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtSubTotal.setEnabled(false);
         txtSubTotal.setFocusable(false);
         txtSubTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -455,7 +457,9 @@ public class viewFacturacion extends javax.swing.JFrame {
 
         txtTotal.setEditable(false);
         txtTotal.setBackground(new java.awt.Color(204, 204, 204));
+        txtTotal.setForeground(new java.awt.Color(0, 0, 0));
         txtTotal.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        txtTotal.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtTotal.setEnabled(false);
         txtTotal.setFocusable(false);
         txtTotal.addActionListener(new java.awt.event.ActionListener() {
@@ -636,7 +640,7 @@ public class viewFacturacion extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -839,12 +843,17 @@ public class viewFacturacion extends javax.swing.JFrame {
 
             String metodoPago = cmbPago.getItemAt(indexMetodoPago);
 
-            if (indexMetodoPago != 0) {
-                factura(valorRecibido, cambio, metodoPago);
-            } else {
+            if (indexMetodoPago == 0) {
                 JOptionPane.showMessageDialog(this, "Selecciona un metodo de pago.", "Error", JOptionPane.ERROR_MESSAGE);
-
+                return;
             }
+
+            if (cambio < 0) {
+                JOptionPane.showMessageDialog(this, "Ingresa valores validos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            factura(valorRecibido, cambio, metodoPago);
 
             frmFinalizar.setVisible(false);
             txtCompra.setText("");
@@ -860,11 +869,11 @@ public class viewFacturacion extends javax.swing.JFrame {
         // TODO add your handling code here:
         viewMenu2 m;
         try {
-                m = new viewMenu2();
-                m.setVisible(true);
-            } catch (IOException ex) {
-                Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            m = new viewMenu2();
+            m.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
