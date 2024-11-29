@@ -11,10 +11,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 
-/**
- *
- * @author hp
- */
 public class viewUsuario extends javax.swing.JFrame {
 
     private controladorLogin controlador;
@@ -26,7 +22,7 @@ public class viewUsuario extends javax.swing.JFrame {
         try {
             controlador = new controladorLogin();
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar los proveedores: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al cargar los usuarios: " + e.getMessage());
             return;
         }
 
@@ -139,7 +135,7 @@ public class viewUsuario extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        frmCrearPP.setTitle("Crear Producto");
+        frmCrearPP.setTitle("Crear Usuario");
         frmCrearPP.setSize(new java.awt.Dimension(586, 430));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -273,6 +269,7 @@ public class viewUsuario extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
+        frmModificarPP.setTitle("Modificar Usuario");
         frmModificarPP.setSize(new java.awt.Dimension(568, 424));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -550,6 +547,7 @@ public class viewUsuario extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMouseClicked
@@ -580,6 +578,8 @@ public class viewUsuario extends javax.swing.JFrame {
         frmModificarPP.setVisible(true);
         txtPasswordM.setText("");
         frmModificarPP.setSize(586, 450);
+        btnModificar.setEnabled(false);
+        btnEliminar.setEnabled(false);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -590,16 +590,16 @@ public class viewUsuario extends javax.swing.JFrame {
                 return;
             }
 
-            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este usuario?", "Confirmación", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 String codigo = (String) modelo.getValueAt(fila, 0);
                 controlador.eliminarUsuario(codigo);
                 actualizarTabla();
                 limpiarCampos();
-                JOptionPane.showMessageDialog(this, "Producto eliminado con éxito");
+                JOptionPane.showMessageDialog(this, "Usuario eliminado con éxito");
 
-                btnModificar.setEnabled(true);
-                btnEliminar.setEnabled(true);
+                btnModificar.setEnabled(false);
+                btnEliminar.setEnabled(false);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -623,7 +623,7 @@ public class viewUsuario extends javax.swing.JFrame {
             controlador.agregarUsuario(txtUsername.getText(), txtPassword.getText(), txtNombre.getText(), cmbRole.getItemAt(indexRole));
             actualizarTabla();
             limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Producto agregado con éxito");
+            JOptionPane.showMessageDialog(this, "Usuario agregado con éxito");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -652,7 +652,7 @@ public class viewUsuario extends javax.swing.JFrame {
             controlador.modificarUsuario(txtUsernameM.getText(), usuario);
             actualizarTabla();
             limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Producto modificado con éxito");
+            JOptionPane.showMessageDialog(this, "Usuario modificado con éxito");
             btnModificar.setEnabled(false);
             btnEliminar.setEnabled(false);
         } catch (Exception ex) {

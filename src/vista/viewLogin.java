@@ -247,7 +247,7 @@ public class viewLogin extends javax.swing.JFrame {
                     Logger.getLogger(viewLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid username or password");
+                JOptionPane.showMessageDialog(this, "Credenciales Invalidas..");
             }
         }
     }//GEN-LAST:event_txtPasswordKeyReleased

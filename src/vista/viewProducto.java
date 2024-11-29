@@ -371,6 +371,7 @@ public class viewProducto extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
+        frmModificarPP.setTitle("Modificar Producto");
         frmModificarPP.setSize(new java.awt.Dimension(568, 424));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -675,6 +676,7 @@ public class viewProducto extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMouseClicked
@@ -695,7 +697,7 @@ public class viewProducto extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         frmModificarPP.setVisible(true);
-        frmCrearPP.setSize(586, 505);
+        frmModificarPP.setSize(586, 480);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

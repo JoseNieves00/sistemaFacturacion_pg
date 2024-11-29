@@ -708,16 +708,6 @@ public class viewFacturacion extends javax.swing.JFrame {
 
     private void txtCodigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCodigoFocusLost
         // TODO add your handling code here:
-        String codigo = txtCodigo.getText().trim();
-        Producto producto = controladorProductos.buscarProducto(codigo);
-
-        if (producto != null) {
-            txtNombre.setText(producto.getNombre());
-            txtStock.setText(String.valueOf(producto.getCantidad()));
-        } else {
-            txtNombre.setText("");
-            txtStock.setText("");
-        }
     }//GEN-LAST:event_txtCodigoFocusLost
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed

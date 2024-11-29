@@ -42,7 +42,7 @@ public class controladorLogin {
     // Crear archivo de usuarios con un usuario admin por defecto
     private void crearArchivoUsuariosPorDefecto() throws IOException {
         ArrayList<String> lineas = new ArrayList<>();
-        lineas.add("admin,admin,Administrador,admin"); // Usuario admin por defecto
+        lineas.add("admin,admin,Administrador,ADMINISTRADOR"); // Usuario admin por defecto
         escribirArchivo(lineas);
     }
 

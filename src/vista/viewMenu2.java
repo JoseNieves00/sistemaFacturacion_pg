@@ -36,13 +36,11 @@ public class viewMenu2 extends javax.swing.JFrame {
         }
 
         String role = usuarioActivo.getRole().toUpperCase();
-        System.out.println(role);
 
-        if (usuarioActivo.getRole().toUpperCase().equals("ADMINISTRADOR")) {
+        if (role.equals("ADMINISTRADOR")) {
             mnUsuarios.setEnabled(true);
         }
 
-        System.out.println("Usuario activo: " + usuarioActivo.getNombre());
     }
 
     /**
